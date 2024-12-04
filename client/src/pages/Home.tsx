@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '../components/header/header.tsx';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
+import '../css/Home.css'; // Import file CSS để styling
 const Home: React.FC = () => {
 
     const menuItems = [
@@ -14,7 +15,7 @@ const Home: React.FC = () => {
     <div>
       <Sidebar menuItems={menuItems} />
         <Header title='Mua thêm trang in' />
-      <h1>Home Page</h1>
+      <h1 className='main'>Home Page</h1>
     </div>
   );
 };

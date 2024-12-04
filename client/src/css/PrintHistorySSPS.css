@@ -1,0 +1,34 @@
+
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 250px;
+    max-width: 1400px;
+}
+
+.table-header {
+    background-color: #f2f2f2;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    text-align: left;
+}
+.table th, .table td {
+    border: 1px solid #000000;
+}
+.table-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.table-cell:nth-child(even) {
+    background-color: #ffffff;
+}
+
