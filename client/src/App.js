@@ -9,6 +9,7 @@ import InfoUser from './pages/InfoUser.tsx';
 import HistoryPage from './pages/HistoryPage.tsx';
 import PrintPage from './pages/PrintPage.tsx';
 import PurchasePage from './pages/PurchasePage.tsx';
+import PurchaseHistory from './pages/PurchaseHistory.tsx';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/print" element={<PrintPage/>}/>
           <Route path="/purchase" element={<PurchasePage/>} />
           <Route path="/history" element={<HistoryPage/>} />
+          <Route path='/purchasehistory' element={<PurchaseHistory/>}/>
         </Routes>
       </Router>
     </div>

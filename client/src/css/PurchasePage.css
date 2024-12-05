@@ -1,10 +1,9 @@
-.content {
+.PurchasePage-content {
     margin-left: 220px;
     padding: 20px;
-    
 }
 
-.box {
+.PurchasePage-box {
     border: 1px solid #000;
     border-radius: 5px;
     padding: 20px;
@@ -13,21 +12,21 @@
     margin: 0 auto;
 }
 
-.box table {
+.PurchasePage-box table {
     width: 100%;
     border-collapse: collapse;
     border: none;
 }
 
-.box table td,
-.box table th {
+.PurchasePage-box table td,
+.PurchasePage-box table th {
     border: none;
     padding: 10px 0;
     padding: 15px 10px;
     min-width: 150px;
 }
 
-.input {
+.PurchasePage-input {
     padding: 10px;
     margin: 10px 0;
     width: 100%;
@@ -38,11 +37,11 @@
     color: #999;
 }
 
-.button-container {
+.PurchasePage-button-container {
     text-align: center;
 }
 
-.pay-button {
+.PurchasePage-pay-button {
     background-color: #ff5c5c;
     color: white;
     border: none;
@@ -53,9 +52,8 @@
     margin: 0 auto;
     display: block;
 }
-.pay-button:hover {
+
+.PurchasePage-pay-button:hover {
     background-color: #ff3b3b;
     transform: scale(1.05);
 }
-
-
