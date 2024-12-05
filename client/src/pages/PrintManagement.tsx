@@ -4,22 +4,41 @@ import Sidebar from '../components/sidebars/Sidebar.tsx';
 import '../css/PrintManagement.css'; // Import file CSS để styling
 
 type Printer = {
-  code: string;
+  _id: string;
+  printerId: string;
   brand: string;
-  location: string;
-  status: string;
+  model: string;
+  description: string;
+  isEnabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  location: {
+    campus: string;
+    building: string;
+    room: string;
+  };
 };
 
 const PrintManagement: React.FC = () => {
   const [printers, setPrinters] = useState<Printer[]>([
-    { code: "AAJ123", brand: "SAMSUNG", location: "H6-811", status: "Có thể sử dụng" },
-    { code: "AAJ124", brand: "HP", location: "H6-812", status: "Bảo trì" },
-    { code: "AAJ125", brand: "CANON", location: "H6-813", status: "Có thể sử dụng" },
-    { code: "AAJ126", brand: "EPSON", location: "H6-814", status: "Có thể sử dụng" },
-    { code: "AAJ127", brand: "BROTHER", location: "H6-815", status: "Bảo trì" },
-    { code: "AAJ128", brand: "XEROX", location: "H6-816", status: "Có thể sử dụng" },
-    { code: "AAJ129", brand: "OKI", location: "H6-817", status: "Có thể sử dụng" },
-    { code: "AAJ130", brand: "KYOCERA", location: "H6-818", status: "Bảo trì" },
+    {
+      _id: "67515f302c80dc797058bb0f",
+      printerId: "23345671",
+      brand: "HP",
+      model: "LaserJet Pro",
+      description: "A high quality printer",
+      isEnabled: true,
+      createdAt: "2024-12-05T08:07:12.886Z",
+      updatedAt: "2024-12-05T08:07:12.886Z",
+      __v: 0,
+      location: {
+        campus: "CS1",
+        building: "H6",
+        room: "120"
+      }
+    },
+    // Add other printers here
   ]);
 
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
@@ -28,10 +47,20 @@ const PrintManagement: React.FC = () => {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isAddPrinterModalVisible, setIsAddPrinterModalVisible] = useState(false); // State cho modal thêm máy in
   const [newPrinter, setNewPrinter] = useState<Printer>({
-    code: '',
+    _id: '',
+    printerId: '',
     brand: '',
-    location: '',
-    status: 'Có thể sử dụng',
+    model: '',
+    description: '',
+    isEnabled: true,
+    createdAt: '',
+    updatedAt: '',
+    __v: 0,
+    location: {
+      campus: '',
+      building: '',
+      room: ''
+    }
   });
 
   const [selectedPrinterIndex, setSelectedPrinterIndex] = useState<number | null>(null);
@@ -51,10 +80,10 @@ const PrintManagement: React.FC = () => {
   const confirmStatusChange = () => {
     if (selectedPrinterIndex !== null) {
       const updatedPrinters = [...printers];
-      const currentStatus = updatedPrinters[selectedPrinterIndex].status;
+      const currentStatus = updatedPrinters[selectedPrinterIndex].isEnabled;
 
       // Chuyển trạng thái từ "Có thể sử dụng" sang "Bảo trì" và ngược lại
-      updatedPrinters[selectedPrinterIndex].status = currentStatus === "Có thể sử dụng" ? "Bảo trì" : "Có thể sử dụng";
+      updatedPrinters[selectedPrinterIndex].isEnabled = !currentStatus;
 
       // Cập nhật lại state
       setPrinters(updatedPrinters);
@@ -82,14 +111,29 @@ const PrintManagement: React.FC = () => {
   // Hàm thêm máy in mới
   const handleAddPrinter = () => {
     setPrinters([...printers, newPrinter]);
-    setNewPrinter({ code: '', brand: '', location: '', status: 'Có thể sử dụng' }); // Reset form
+    setNewPrinter({
+      _id: '',
+      printerId: '',
+      brand: '',
+      model: '',
+      description: '',
+      isEnabled: true,
+      createdAt: '',
+      updatedAt: '',
+      __v: 0,
+      location: {
+        campus: '',
+        building: '',
+        room: ''
+      }
+    }); // Reset form
     closeAddPrinterModal();
   };
 
   // Hàm thay đổi giá trị trường input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: string) => {
-      setNewPrinter({ ...newPrinter, [field]: e.target.value });
-    };
+    setNewPrinter({ ...newPrinter, [field]: e.target.value });
+  };
 
   // Tính toán các máy in cần hiển thị trên trang hiện tại
   const indexOfLastPrinter = currentPage * printersPerPage;
@@ -111,18 +155,22 @@ const PrintManagement: React.FC = () => {
             <tr>
               <th>Mã máy in</th>
               <th>Thương hiệu</th>
+              <th>Model</th>
+              <th>Mô tả</th>
+              <th>Trạng thái</th>
               <th>Nơi đặt</th>
-              <th>Tình trạng</th>
               <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
             {currentPrinters.map((printer, index) => (
               <tr key={index}>
-                <td>{printer.code}</td>
+                <td>{printer.printerId}</td>
                 <td>{printer.brand}</td>
-                <td>{printer.location}</td>
-                <td>{printer.status}</td>
+                <td>{printer.model}</td>
+                <td>{printer.description}</td>
+                <td>{printer.isEnabled ? "Có thể sử dụng" : "Bảo trì"}</td>
+                <td>{`${printer.location.campus} - ${printer.location.building} - ${printer.location.room}`}</td>
                 <td>
                   {/* Nút thay đổi trạng thái */}
                   <button onClick={() => handleStatusChange(index)}>
@@ -178,8 +226,8 @@ const PrintManagement: React.FC = () => {
             <label>Mã máy in:</label>
             <input
               type="text"
-              value={newPrinter.code}
-              onChange={(e) => handleInputChange(e, 'code')}
+              value={newPrinter.printerId}
+              onChange={(e) => handleInputChange(e, 'printerId')}
             />
             <label>Thương hiệu:</label>
             <input
@@ -187,19 +235,41 @@ const PrintManagement: React.FC = () => {
               value={newPrinter.brand}
               onChange={(e) => handleInputChange(e, 'brand')}
             />
+            <label>Model:</label>
+            <input
+              type="text"
+              value={newPrinter.model}
+              onChange={(e) => handleInputChange(e, 'model')}
+            />
+            <label>Mô tả:</label>
+            <input
+              type="text"
+              value={newPrinter.description}
+              onChange={(e) => handleInputChange(e, 'description')}
+            />
             <label>Nơi đặt:</label>
             <input
               type="text"
-              value={newPrinter.location}
-              onChange={(e) => handleInputChange(e, 'location')}
+              value={newPrinter.location.campus}
+              onChange={(e) => handleInputChange(e, 'location.campus')}
             />
-            <label>Tình trạng:</label>
+            <input
+              type="text"
+              value={newPrinter.location.building}
+              onChange={(e) => handleInputChange(e, 'location.building')}
+            />
+            <input
+              type="text"
+              value={newPrinter.location.room}
+              onChange={(e) => handleInputChange(e, 'location.room')}
+            />
+            <label>Trạng thái:</label>
             <select
-              value={newPrinter.status}
-              onChange={(e) => handleInputChange(e, 'status')}
+              value={newPrinter.isEnabled ? "Có thể sử dụng" : "Bảo trì"}
+              onChange={(e) => handleInputChange(e, 'isEnabled')}
             >
-              <option value="Có thể sử dụng">Có thể sử dụng</option>
-              <option value="Bảo trì">Bảo trì</option>
+              <option value="true">Có thể sử dụng</option>
+              <option value="false">Bảo trì</option>
             </select>
             <div className="modal-actions">
               <button onClick={handleAddPrinter}>Thêm máy in</button>

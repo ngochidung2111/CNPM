@@ -33,7 +33,7 @@ const PrintHistory: React.FC = () => {
       <Header title="Lịch sử in ấn" />
 
       <div className="content">
-        <h2>Lịch sử in ấn</h2>
+        
 
         {/* Bảng Lịch sử in */}
         <table className="table">

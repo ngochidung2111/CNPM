@@ -6,7 +6,7 @@ import Decontralization from './pages/Decontralization.tsx';
 import Login from './pages/Login.tsx';
 import SignUp from './pages/Signup.tsx';
 import InfoUser from './pages/InfoUser.tsx';
-import HistoryPageg from './pages/HistoryPage.tsx';
+import HistoryPage from './pages/HistoryPage.tsx';
 import PrintPage from './pages/PrintPage.tsx';
 import PurchasePage from './pages/PurchasePage.tsx';
 
@@ -19,7 +19,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="phanquyen" element={<Decontralization />} />
+          <Route path="/phanquyen" element={<Decontralization />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
