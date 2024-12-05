@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const spsoController = require('../controllers/spsoController');
 
-// Route: Tạo mới sinh viên
+// Route: Tạo mới spso
 router.post('/', spsoController.createSPSO);
 
 // Route: Lấy thông tin spso
