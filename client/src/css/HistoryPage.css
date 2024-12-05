@@ -1,4 +1,4 @@
-.content {
+.HistoryPage-content {
     margin-left: 220px;
     padding: 20px;
     display: flex;
@@ -7,7 +7,7 @@
     height: calc(100vh - 60px);
 }
 
-.table-container {
+.HistoryPage-table-container {
     width: 60%;
     margin-top: 20px;
 }

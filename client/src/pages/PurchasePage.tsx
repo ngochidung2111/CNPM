@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/header/header.tsx";
 import Sidebar from "../components/sidebars/Sidebar.tsx";
-import "../css/PrintPage.css";
+import "../css/PrintPage.css"; // Giữ nguyên tên file CSS nếu không thay đổi
 import { menuItems } from '../data/menuItems.tsx';
 
 const PurchasePage: React.FC = () => {
@@ -13,13 +13,15 @@ const PurchasePage: React.FC = () => {
       date: "01/01/2004",
     };
   };
-const studentData = getStudentData();
+
+  const studentData = getStudentData();
+
   return (
     <div>
       <Sidebar menuItems={menuItems} />
       <Header title="Mua thêm trang in" />
-      <div className="content">
-        <div className="box">
+      <div className="PurchasePage-content">
+        <div className="PurchasePage-box">
           <table>
             <tbody>
               <tr>
@@ -40,13 +42,13 @@ const studentData = getStudentData();
                   <input
                     type="text"
                     placeholder="Nhập số lượng trang"
-                    className="input"
+                    className="PurchasePage-input"
                   />
                 </td>
               </tr>
               <tr>
-                <td colSpan={2} className="button-container">
-                  <button className="pay-button">Thanh toán</button>
+                <td colSpan={2} className="PurchasePage-button-container">
+                  <button className="PurchasePage-pay-button">Thanh toán</button>
                 </td>
               </tr>
             </tbody>
