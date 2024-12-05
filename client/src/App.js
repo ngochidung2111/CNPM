@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home.tsx';
+import HomePage from './pages/HomePage.tsx';
+import Decontralization from './pages/Decontralization.tsx';
+import Login from './pages/Login.tsx';
+import SignUp from './pages/Signup.tsx';
+import InfoUser from './pages/InfoUser.tsx';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="phanquyen" element={<Decontralization />} />
+          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/info" element={<InfoUser />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
