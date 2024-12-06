@@ -189,43 +189,44 @@ exports.updateTransaction = async (req, res) => {
   
 // Rồi giờ mà trạng thái giao dịch là paid rồi á thì thêm trang in cho sinh viên liền ngay và luôn
 exports.addPrintingPages = async (req, res) => {
-    try {
-      const { transactionId } = req.params; // Lấy ID giao dịch từ URL
-      // Tìm giao dịch với ID cung cấp và kiểm tra trạng thái giao dịch
-      const transaction = await Transaction.findById(transactionId);
-      if (!transaction) {
-        return res.status(404).json({ message: 'Transaction not found' });
-      }
-  
-      // Kiểm tra trạng thái giao dịch là PAID
-      if (transaction.status !== 'PAID') {
-        return res.status(400).json({ message: 'Transaction is not successful' });
-      }
-      // Tìm sinh viên dựa trên studentId từ giao dịch
-      const student = await Student.findById(transaction.studentId);
-      if (!student) {
-        return res.status(404).json({ message: 'Student not found' });
-      }
-  
-      // Cập nhật số trang in của sinh viên
-      student.pageBalance += transaction.pageAmount;
-      await student.save();
-  
-      // Trả về thông báo thành công và thông tin sinh viên đã cập nhật
-      res.status(200).json({
-        message: 'Printing pages added successfully',
-        student: {
-          _id: student._id,
-          name: student.name,
-          email: student.email,
-          pageBalance: student.pageBalance,
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
+  try {
+    const { transactionId } = req.params;
+    // Kiểm tra transactionId không hợp lệ
+    if (!transactionId || typeof transactionId !== 'string' || transactionId.trim() === '') {
+      return res.status(400).json({ message: 'Invalid transaction ID format' });
     }
-  };
+
+    // Tìm giao dịch với ID cung cấp và trạng thái là PAID
+    const transaction = await Transaction.findOne({ _id: transactionId, status: 'PAID' });
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found or not successful' });
+    }
+
+    // Tìm sinh viên dựa trên studentId từ giao dịch
+    const student = await Student.findById(transaction.studentId);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Cập nhật số trang in của sinh viên
+    student.pageBalance += transaction.pageAmount;
+    await student.save();
+
+    res.status(200).json({
+      message: 'Printing pages added successfully',
+      student: {
+        _id: student._id,
+        name: student.name,
+        email: student.email,
+        pageBalance: student.pageBalance,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 
 // Xóa giao dịch theo transaction id

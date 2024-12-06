@@ -20,7 +20,7 @@ router.get('/student/:studentId', transactionController.getTransactionsByStudent
 router.put('/:id', transactionController.updateTransaction);
 
 // Route: Cập nhật số trang in cho sinh viên nếu thanh toán thành công ngay và luôn
-router.put('/addpage/:transactionId', transactionController.addPrintingPages);
+router.post('/addpage/:transactionId', transactionController.addPrintingPages);
 
 // Route: Xóa thông tin giao dịch theo ID
 router.delete('/:id', transactionController.deleteTransaction);

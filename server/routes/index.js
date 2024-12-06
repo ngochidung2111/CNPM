@@ -11,6 +11,7 @@ const initRoutes = (app) => {
     app.use('/api/students',studentRouter);
     app.use('/api/printingLogs',printJobRouter);
     app.use('/api/spso',spsoRouter);
+    app.use('/api/transaction',transactionRouter);
     app.use('/api/configuration',configurationRouter);
 }
 
