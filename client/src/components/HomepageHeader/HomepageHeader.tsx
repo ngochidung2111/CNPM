@@ -13,7 +13,7 @@ const HomepageHeader: React.FC = () => {
       <div className='homepage-header-title'>
         DỊCH VỤ IN ẤN SINH VIÊN
       </div>
-      <a href='phanquyen' className='homepage-header-button'>Đăng nhập</a>
+      <a href='authorization' className='homepage-header-button'>Đăng nhập</a>
       
     </div>
   )

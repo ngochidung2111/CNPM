@@ -1,4 +1,4 @@
-.decentralization-container {
+.authorization-container {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -13,14 +13,14 @@
   background-attachment: fixed;
 }
 
-.decentralization-container .logo {
+.authorization-container .logo {
   width: 240px;
   height: 230px;
   margin-bottom: 48px;
   margin-top: 120px;
 }
 
-.decentralization-container .items-container {
+.authorization-container .items-container {
   display: flex;
   gap: 200px;
   justify-content: center;

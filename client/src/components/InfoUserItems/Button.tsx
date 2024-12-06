@@ -8,7 +8,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ text, color, onClick }) => {
   return (
     <div className="info-button">
-      <button onClick={onClick} style={{ backgroundColor: color }}>{text}</button>
+      <button onClick={onClick} style={{ backgroundColor: color}}>{text}</button>
     </div>
   )
 }
