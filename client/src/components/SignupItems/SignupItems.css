@@ -18,6 +18,20 @@
   background: #84a3c6;
   border-radius: 40px;
   text-indent: 20px;
+  font-family: EB Garamond;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+.signup-form-field input::placeholder {
+  color: #e1f0f347;
+}
+.signup-form-field input:hover {
+  border: 1px solid #000000;
+}
+.signup-form-field input:focus {
+  outline: 1px solid #150496;
+  border: 1px solid #150496;
 }
 .signup-form-button {
   display: flex;
@@ -47,18 +61,18 @@
 .signup-form-button:hover {
   background: linear-gradient(to bottom left, #62c1ea, #7edebb);
   cursor: pointer;
-  transition: all 1s ease;
-  border-radius: 20px;
+  transition: all 0.5s ease;
+  border-radius: 10px;
   box-shadow: 0 0 10px #9ccfe9,
-                  0 0 20px #58e587,
-                  0 0 20px #e99ce1;
-  scale: 1.02;
+                  0 0 10px #58e587,
+                  0 0 10px #e99ce1;
+  scale: 1.01;
 }
 .signup-form-button:hover button {
   background: transparent;
   color: #3941d4;
   cursor: pointer;
-  transition: all 1s ease;
+  transition: all 0.5s ease;
 }
 
 .signup-have-account {
@@ -72,6 +86,7 @@
   font-size: 18px;
   font-weight: 700;
   line-height: 24px;
+  cursor: text;
 }
 .signup-have-account span:last-child {
   font-family: EB Garamond;
@@ -83,4 +98,7 @@
   text-decoration-style: solid;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+}
+.signup-have-account span:last-child:hover {
+    color: #4366d7;
 }

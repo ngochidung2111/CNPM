@@ -24,6 +24,11 @@
     text-indent: 20px;
     color: #000000;
 }
+.field-container input:focus {
+    outline: 1px solid #1a66f4;
+    border: 1px solid #183ebb;
+    
+}
 .forgot-container {
     font-family: EB Garamond;
     color: #184A93;
@@ -84,7 +89,6 @@
     font-size: 18px;
     font-weight: 400;
     line-height: 22px;
-
 }
 .no-account-container span:last-child {
     font-family: EB Garamond;
@@ -97,7 +101,9 @@
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #073375;
-    
+}
+.no-account-container span:last-child:hover {
+    color: #4366d7;
 }
 .error-message {
     padding: 0;
