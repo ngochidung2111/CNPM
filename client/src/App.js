@@ -11,7 +11,10 @@ import PrintPage from './pages/PrintPage.tsx';
 import PurchasePage from './pages/PurchasePage.tsx';
 import PurchaseHistory from './pages/PurchaseHistory.tsx';
 
-
+import Config from './pages/Config.tsx';
+import PrintManagement from './pages/PrintManagement.tsx';
+import PrintHistory from './pages/PrintHistorySSPS.tsx';
+import PrintPageManagement from './pages/PageManagementSSPS.tsx';
 function App() {
   return (
     <div>
@@ -27,6 +30,10 @@ function App() {
           <Route path="/purchase" element={<PurchasePage/>} />
           <Route path="/history" element={<HistoryPage/>} />
           <Route path='/purchasehistory' element={<PurchaseHistory/>}/>
+          <Route path="/config" element={<Config/>} />
+          <Route path="/printmanagement" element={<PrintManagement/>} />
+          <Route path="/printhistory" element={<PrintHistory />} />
+          <Route path="/trangin" element={<PrintPageManagement />} />
         </Routes>
       </Router>
     </div>

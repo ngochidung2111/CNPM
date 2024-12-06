@@ -4,7 +4,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: calc(100vh - 60px);
 }
 
 .HistoryPage-table-container {
