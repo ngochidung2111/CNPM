@@ -1,9 +1,12 @@
 import React from 'react'
 import './LoginItems.css'
-const Button: React.FC = () => {
+interface ButtonProps {
+  onClick: () => void;
+}
+const Button: React.FC<ButtonProps> = ({onClick}) => {
   return (
     <div className='button-container'>
-      <button>Đăng nhập</button>
+      <button onClick={onClick}>Đăng nhập</button>
     </div>
   )
 }

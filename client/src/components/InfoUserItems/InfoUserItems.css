@@ -44,6 +44,32 @@
     border: 1px solid #000;
     border-bottom: none;
 }
+.info-frame form input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    padding: 0;
+    box-sizing: border-box;
+    
+    
+    font-family: EB Garamond;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 32px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    border: 1px solid #000;
+    border-bottom: none;
+    color: #3a96b2;
+    flex: 6;
+    gap: 6px;
+    border-left: none;
+}
 .info-frame form p:nth-child(2) {
     color: #000;
     flex: 6;
@@ -66,4 +92,10 @@
     border: none;
     color: white;
     cursor: pointer;
+    transition: box-shadow 0.3s ease;
+}
+.info-button button:hover {
+    scale: 1.05;
+    filter: drop-shadow(4px 4px 8px #f6cdce) 
+            drop-shadow(4px 4px 8px #ffdfb9);
 }

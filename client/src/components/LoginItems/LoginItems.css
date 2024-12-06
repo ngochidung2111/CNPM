@@ -1,7 +1,7 @@
 .field-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     padding-bottom: 20px;
 }
 .field-container span {
@@ -22,6 +22,12 @@
     height: 44px;
     width: 500px;
     text-indent: 20px;
+    color: #000000;
+}
+.field-container input:focus {
+    outline: 1px solid #1a66f4;
+    border: 1px solid #183ebb;
+    
 }
 .forgot-container {
     font-family: EB Garamond;
@@ -44,6 +50,7 @@
     display: flex;
     justify-content: center;
     cursor: pointer;
+    transition: all 2s ease;
 }
 .button-container button {
     border: none;
@@ -55,6 +62,21 @@
     font-size: 18px;
     font-weight: 700;
     line-height: 22px;
+    transition: all 2s ease;
+}
+.button-container:hover {
+    background: linear-gradient(to right, #72d3d5, #72dd79);
+    cursor: pointer;
+    transition: all 1s ease;
+    border: none;
+    scale: 1.02;
+    border-radius: 10px;
+}
+.button-container:hover button {
+    background: transparent;
+    color: #000000;
+    cursor: pointer;
+    transition: all 1s ease;
 }
 .no-account-container {
     display: flex;
@@ -67,7 +89,6 @@
     font-size: 18px;
     font-weight: 400;
     line-height: 22px;
-
 }
 .no-account-container span:last-child {
     font-family: EB Garamond;
@@ -80,5 +101,17 @@
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #073375;
-    
+}
+.no-account-container span:last-child:hover {
+    color: #4366d7;
+}
+.error-message {
+    padding: 0;
+    margin: 0;
+    color: red;
+    font-family: EB Garamond;
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 10px;
+    padding-left: 10px;
 }

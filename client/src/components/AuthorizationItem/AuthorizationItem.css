@@ -8,6 +8,11 @@
     flex-direction: column;
     cursor: pointer;
 }
+.item:hover {
+    scale: 1.03;
+    background-color: #e6fa72;
+    transition: 0.3s;
+}
 .item img {
     width: 60px;
     position: absolute;

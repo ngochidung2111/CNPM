@@ -4,12 +4,15 @@ interface FieldProps {
     title: string;
     placeholder: string;
     type: string;
+    onChange: (value: string) => void;
+    error: string;
 }
-const Field: React.FC<FieldProps> = ({title, placeholder, type}) => {
+const Field: React.FC<FieldProps> = ({title, placeholder, type, onChange, error}) => {
   return (
     <div className='field-container'>
       <span>{title}</span>
-      <input type={type} placeholder={placeholder} />
+      <input type={type} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
+      {error && <span className='error-message'>{error}</span>}
     </div>
   )
 }

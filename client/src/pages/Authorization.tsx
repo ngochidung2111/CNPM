@@ -1,10 +1,10 @@
 import React from 'react'
-import '../css/Decontralization.css'
-import DecontralizationItem from '../components/DecentralizationItem/DecentralizationItem.tsx'
+import '../css/Authorization.css'
+import AuthorizationItem from '../components/AuthorizationItem/AuthorizationItem.tsx'
 import personIcon from '../components/assets/image/person.png'
 import personFillIcon from '../components/assets/image/person-fill.png'
 
-const Decontralization: React.FC = () => {
+const Authorization: React.FC = () => {
     const props = [{
         avatar: personIcon,
         object: 'Sinh viên'
@@ -14,14 +14,14 @@ const Decontralization: React.FC = () => {
         object: 'SPSO'
     }]
   return (
-    <div className="decentralization-container">
+    <div className="authorization-container">
         <img className='logo' src={require('../components/assets/image/hcmut.png')} alt="Logo" />
         <div className="items-container">
-            <DecontralizationItem avatar={props[0].avatar} object={props[0].object} />
-            <DecontralizationItem avatar={props[1].avatar} object={props[1].object} />
+            <AuthorizationItem avatar={props[0].avatar} object={props[0].object} />
+            <AuthorizationItem avatar={props[1].avatar} object={props[1].object} />
         </div>
     </div>
   )
 }
 
-export default Decontralization
+export default Authorization
