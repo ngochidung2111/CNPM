@@ -1,0 +1,84 @@
+.PrintPage-main-content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 150px;
+}
+
+.PrintPage-form-container {
+    border: 1px solid #000;
+    padding: 20px;
+    width: 50%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.PrintPage-form-container div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.PrintPage-form-container div label {
+    width: 30%;
+}
+
+.PrintPage-form-container div input,
+.PrintPage-form-container div select {
+    width: 70%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.PrintPage-form-container .PrintPage-date-time {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.PrintPage-form-container .PrintPage-date-time input {
+    width: 48%;
+}
+
+.PrintPage-form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.PrintPage-form-container button:hover {
+    background-color: #bbb;
+    transform: scale(1.05);
+}
+
+.PrintPage-form-container button:active {
+    background-color: #aaa;
+    transform: scale(1);
+}
+
+.PrintPage-form-container .PrintPage-upload-container {
+    justify-content: space-between;
+}
+
+.PrintPage-form-container .PrintPage-upload-container .PrintPage-icon-container {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+}
+
+.PrintPage-upload-container .PrintPage-icon-container .PrintPage-icon-label {
+    cursor: pointer;
+    font-size: 24px;
+    transition: transform 0.2s;
+}
+
+.PrintPage-upload-container .PrintPage-icon -container:hover .PrintPage-icon-label {
+    transform: scale(1.05);
+}

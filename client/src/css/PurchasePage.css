@@ -1,0 +1,59 @@
+.PurchasePage-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+.PurchasePage-box {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.PurchasePage-box table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.PurchasePage-box table td,
+.PurchasePage-box table th {
+    border: none;
+    padding: 10px 0;
+    padding: 15px 10px;
+    min-width: 150px;
+}
+
+.PurchasePage-input {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    color: #999;
+}
+
+.PurchasePage-button-container {
+    text-align: center;
+}
+
+.PurchasePage-pay-button {
+    background-color: #ff5c5c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+}
+
+.PurchasePage-pay-button:hover {
+    background-color: #ff3b3b;
+    transform: scale(1.05);
+}
