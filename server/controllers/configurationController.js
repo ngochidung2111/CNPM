@@ -2,7 +2,7 @@ const Configuration = require('../models/configuration');
 // tạo cấu hình mới
 exports.createConfiguration = async (req, res) => {
   try {
-    const { defaultPages, permittedFileTypes, pageGrantDates } = req.body;
+    const { defaultPages, permittedFileTypes, pageGrantDates, pricePerPage } = req.body;
 
     // Kiểm tra tham số đầu vào
     if (defaultPages && (typeof defaultPages !== 'number' || defaultPages < 0)) {
@@ -15,6 +15,10 @@ exports.createConfiguration = async (req, res) => {
 
     if (pageGrantDates && !Array.isArray(pageGrantDates)) {
       return res.status(400).json({ message: 'pageGrantDates must be an array of valid date strings' });
+    }
+
+    if (pricePerPage && (typeof pricePerPage !== 'number' || pricePerPage < 0)) {
+      return res.status(400).json({ message: 'pricePerPage must be a positive number' });
     }
 
     // Kiểm tra các ngày cấp trang có phải là dạng ngày hợp lệ
@@ -30,6 +34,7 @@ exports.createConfiguration = async (req, res) => {
       defaultPages,
       permittedFileTypes,
       pageGrantDates,
+      pricePerPage
     });
 
     await newConfiguration.save();

@@ -1,5 +1,5 @@
 const express = require('express');
-const { addPrinter, getAllPrinters,getPrinterById, updatePrinter, deletePrinter } = require('../controllers/printerInforController');
+const { addPrinter, getAllPrinters,getPrinterById, updatePrinter, deletePrinter } = require('../controllers/printerInfoController');
 
 const router = express.Router();
 
