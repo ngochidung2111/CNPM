@@ -1,0 +1,104 @@
+.signup-form-field {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+.signup-form-field span {
+  font-family: EB Garamond;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  padding-left: 16px;
+}
+.signup-form-field input {
+  width: 280px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #84a3c6;
+  background: #84a3c6;
+  border-radius: 40px;
+  text-indent: 20px;
+  font-family: EB Garamond;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+.signup-form-field input::placeholder {
+  color: #e1f0f347;
+}
+.signup-form-field input:hover {
+  border: 1px solid #000000;
+}
+.signup-form-field input:focus {
+  outline: 1px solid #150496;
+  border: 1px solid #150496;
+}
+.signup-form-button {
+  display: flex;
+  justify-content: center;
+  background: #2f04ef;
+  border: none;
+  font-family: EB Garamond;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  height: 50px;
+  width: 280px;
+  margin-top: 20px;
+  transition: all 1s ease;
+  margin-bottom: 10px;
+}
+.signup-form-button button {
+  color: white;
+  background: transparent;
+  border: none;
+  font-family: EB Garamond;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  transition: all 1s ease;
+}
+.signup-form-button:hover {
+  background: linear-gradient(to bottom left, #62c1ea, #7edebb);
+  cursor: pointer;
+  transition: all 0.5s ease;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #9ccfe9,
+                  0 0 10px #58e587,
+                  0 0 10px #e99ce1;
+  scale: 1.01;
+}
+.signup-form-button:hover button {
+  background: transparent;
+  color: #3941d4;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.signup-have-account {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.signup-have-account span:first-child {
+  font-family: EB Garamond;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: text;
+}
+.signup-have-account span:last-child {
+  font-family: EB Garamond;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #0019be;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+.signup-have-account span:last-child:hover {
+    color: #4366d7;
+}
