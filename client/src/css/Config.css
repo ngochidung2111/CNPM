@@ -69,6 +69,8 @@
   border-radius: 10px;
   width: 400px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-height: 80%;
+  overflow-y: auto;
 }
 
 .config-modal-content h3 {
@@ -120,4 +122,122 @@
 
 .config-modal-actions button:last-child:hover {
   background-color: #e53935;
+}
+
+.config-modal-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.config-modal-content li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.config-modal-content li button {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.config-modal-content li button:hover {
+  opacity: 0.8;
+}
+.config-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.config-modal-content h3 {
+  margin-bottom: 20px;
+}
+
+.config-modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-modal-content label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.config-modal-content label span {
+  flex: 1;
+}
+
+.config-modal-content input {
+  flex: 2;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.config-modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.config-modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.config-modal-actions button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.config-modal-actions button:first-child:hover {
+  background-color: #45a049;
+}
+
+.config-modal-actions button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.config-modal-actions button:last-child:hover {
+  background-color: #e53935;
+}
+
+.config-modal-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.config-modal-content li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.config-modal-content li button {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.config-modal-content li button:hover {
+  opacity: 0.8;
 }

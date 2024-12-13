@@ -1,6 +1,22 @@
-import React from 'react'
-import './HomepageHeader.css'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './HomepageHeader.css';
+
 const HomepageHeader: React.FC = () => {
+  const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+  const role = (localStorage.getItem('role') || '');
+
+  const handleButtonClick = () => {
+    if (role === 'Student') {
+      navigate('/print');
+    } else if (role === 'SPSO') {
+      navigate('/printmanagement');
+    } else {
+      navigate('/authorization');
+    }
+  };
+
   return (
     <div className='homepage-header'>
       <div className='homepage-header-label'>
@@ -13,10 +29,11 @@ const HomepageHeader: React.FC = () => {
       <div className='homepage-header-title'>
         DỊCH VỤ IN ẤN SINH VIÊN
       </div>
-      <a href='authorization' className='homepage-header-button'>Đăng nhập</a>
-      
+      <button onClick={handleButtonClick} className='homepage-header-button'>
+        {role === 'Student' ? 'In Ngay' : role === 'SPSO' ? 'Quản Lý' : 'Đăng Nhập'}
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default HomepageHeader
+export default HomepageHeader;

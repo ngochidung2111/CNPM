@@ -15,7 +15,9 @@ const InfoUser: React.FC = () => {
   useEffect(() => {
     
 
+
     const id = localStorage.getItem('id')
+
     let fetchedData;
     
     const fetchData = async () => {

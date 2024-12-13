@@ -23,8 +23,17 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           alt="Avatar"
           className="avatar"
           
-          
-        />
+          />
+         
+          <button
+          className="logout-button"
+          onClick={() => {
+            localStorage.clear();
+            navigate('/');
+          }}
+          >
+          Logout
+          </button>
       </div>
     </header>
   );
