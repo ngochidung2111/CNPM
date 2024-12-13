@@ -67,9 +67,12 @@ text-decoration-skip-ink: none;
     text-decoration-skip-ink: none;
     color: #fff;
     flex: 1;
-  }
+}
 .homepage-header a:hover {
     color: #000;
+}
+.homepage-header a:active {
+    color: #adefd1d1;
 }
 .homepage-header::after {
     content: "";

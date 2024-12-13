@@ -13,6 +13,7 @@
     background-attachment: fixed;
 }
 .login-container img {
+    margin-top: 60px;
     width: 140px;
     height: 140px;
 }
@@ -21,5 +22,5 @@
     font-size: 40px;
     font-weight: 700;
     line-height: 48px;
-    margin: 0 0 60px;
+    margin: 0 0 40px;
 }

@@ -12,10 +12,11 @@
     padding: 10px 20px;
     font-family: Arial, sans-serif;
     z-index: 1000; /* Thêm dòng này để đảm bảo header nằm trên các phần tử khác */
+    margin-bottom: 90px; 
 }
-    body {
-    margin-top: 90px; /* Thêm khoảng trống bằng chiều cao của header */
-  }
+  /*  body {
+    margin-top: 90px; /* Thêm khoảng trống bằng chiều cao của header 
+  } */
   /* Phần bên trái của header */
   .header-left {
     display: flex;

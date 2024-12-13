@@ -4,12 +4,13 @@
     gap: 10px;
     padding-bottom: 20px;
 }
-.field-container span {
+.field-container label {
     font-size: 16px;
     font-weight: 600;
     font-family: EB Garamond;
     line-height: 20px;
     text-align: left;
+    cursor: text;
 }
 .field-container input {
     font-family: EB Garamond;
@@ -24,10 +25,12 @@
     text-indent: 20px;
     color: #000000;
 }
+.field-container input:hover {
+    outline: 1px solid #b0b5be;
+}
 .field-container input:focus {
     outline: 1px solid #1a66f4;
-    border: 1px solid #183ebb;
-    
+    border: 1px solid #183ebb;   
 }
 .forgot-container {
     font-family: EB Garamond;
@@ -41,6 +44,9 @@
     margin: 0 auto;
     width: fit-content;
     cursor: pointer;
+}
+.forgot-container span:last-child:hover {
+    color: #4366d7;
 }
 .button-container {
     margin-top: 20px;
