@@ -3,5 +3,6 @@ const authenticationController = require('../controllers/authenticationControlle
 const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken');
 
 routes.post('/login', authenticationController.login);
+routes.get('/getCurrent', verifyAccessToken, authenticationController.getCurrent);
 
 module.exports = routes;

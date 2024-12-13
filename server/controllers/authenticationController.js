@@ -66,4 +66,31 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { login };
+const getCurrent = async (req, res) => {
+    const { _id, role } = req.user;
+    try {
+        if(role === 'Student') {
+            const response = await Student.findOne({ _id: _id });
+            if(response) {
+                const { password, ...userData } = response.toObject();
+                return res.status(200).json(userData);
+            } else {
+                throw new Error('Student not found');
+            }
+        } else if(role === 'SPSO') {
+            const response = await SPSO.findOne({ _id: _id });
+            if(response) {
+                const { password, ...userData } = response.toObject();
+                return res.status(200).json(userData);
+            } else {
+                throw new Error('SPSO not found');
+            }
+        } else {
+            throw new Error('Invalid role');
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { login, getCurrent };

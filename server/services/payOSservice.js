@@ -11,7 +11,7 @@ const createPayment = asyncHandler(async (req, res) => {
     const YOUR_DOMAIN = process.env.CLIENT_URL;
     ordCode = payOSCode;
     const body = {
-      transactionCode: ordCode,
+      orderCode: ordCode,
       amount: price,
       description: `Thanh toan ${ordCode}`,
       // items: productList,
