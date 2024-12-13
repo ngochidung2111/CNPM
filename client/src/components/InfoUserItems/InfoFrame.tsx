@@ -20,6 +20,11 @@ const InfoFrame: React.FC<InfoFrameProps> = ({ title, info, onValuesChange, onRe
     }
   }, [onResetInput]);
 
+  useEffect(() => {
+    setValues(info.map(item => item.value));
+    console.log(info.map(item => item.value));
+  }, [info])
+
   const handleValueChange = (index: number, newValue: string) => {
     const newValues = [...values];
     newValues[index] = newValue;
@@ -30,7 +35,10 @@ const InfoFrame: React.FC<InfoFrameProps> = ({ title, info, onValuesChange, onRe
       value: i === index ? newValue : values[i]
     }));
     onValuesChange(updatedInfo);
+    
   };
+  // console.log(values);
+  
 
   return (
     <div className='info-frame'>
@@ -51,6 +59,7 @@ const InfoFrame: React.FC<InfoFrameProps> = ({ title, info, onValuesChange, onRe
             type="text" 
             value={values[index]} 
             onChange={(e) => handleValueChange(index, e.target.value)} 
+            autoFocus
           />}
         </form>
       ))}

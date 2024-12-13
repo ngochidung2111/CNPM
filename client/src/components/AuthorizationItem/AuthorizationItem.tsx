@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './AuthorizationItem.css'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,12 +8,12 @@ interface authorizationItem {
 }
 const AuthorizationItem: React.FC<authorizationItem> = ({avatar, object}) => {
   const navigate = useNavigate()
-  const handleClick = () => {
-    console.log(object)
-    navigate('/login')
+  const handleClick = (role: String) => {
+    role =  role === "Sinh viên" ? 'Student' : 'SPSO';
+    navigate('/login', { state: { role } });
   }
   return (
-    <div className='item' onClick={handleClick}>
+    <div className='item' onClick={() => handleClick(object)}>
         <img src={avatar} alt="" />
         <span>{object}</span>
     </div>

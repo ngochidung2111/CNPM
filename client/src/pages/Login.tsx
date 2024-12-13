@@ -4,12 +4,15 @@ import Forgot from '../components/LoginItems/Forgot.tsx'
 import Button from '../components/LoginItems/Button.tsx'
 import NoAccount from '../components/LoginItems/NoAccount.tsx'
 import '../css/Login.css'
-// import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+
 const Login: React.FC = () => {
-  // const navigate = useNavigate()
+  const location = useLocation();
+  const { role } = location.state || {}
   const [formData, setFormData] = useState({
-    account: '',
-    password: ''
+    id: '',
+    password: '',
+    role: role || '',
   });
   const [hasError, setHasError] = useState([false, false]);
   const handleInputChange = (name: string, value: string) => {
@@ -22,7 +25,7 @@ const Login: React.FC = () => {
   const handleLogin = () => {
     const newHasError = [...hasError];
 
-    if (formData.account.trim() === '') {
+    if (formData.id.trim() === '') {   ////////
       newHasError[0] = true;
     } else {
       newHasError[0] = false;
@@ -37,10 +40,34 @@ const Login: React.FC = () => {
 
     if (!(newHasError[0] || newHasError[1])) {
       console.log('Form data:', formData);
-      // check login valid here
+      login();
     }
     console.log('click');
   };
+  const login = async () => {
+    console.log("login before executing", formData);
+    // issue: email --> id ? , dang set theo database
+    // chua bao ve url
+    ////
+
+
+    let responseData;
+    await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData),
+    }).then((response) => response.json()).then((data) => responseData = data)
+    if(responseData.success) {
+      localStorage.setItem('accessToken', responseData.accessToken);
+      window.location.replace('/');
+    }
+    else {
+      alert(responseData.errors);
+    }
+  }
 
   const fieldInfo = [
     {title: 'Tài khoản', placeholder: 'Nhập email/SĐT', type: 'text'},
@@ -55,7 +82,7 @@ const Login: React.FC = () => {
               title={fieldInfo[0].title} 
               placeholder={fieldInfo[0].placeholder} 
               type={fieldInfo[0].type} 
-              onChange={(value) => handleInputChange('account', value)}
+              onChange={(value) => handleInputChange('id', value)} ///////
               error={hasError[0] ? 'Vui lòng nhập tài khoản' : ''}
             />
             <Field 
