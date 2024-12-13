@@ -9,7 +9,7 @@ const Field: React.FC<{title: string, type: string, onChange: (value: string) =>
         type={type} 
         required
         onChange={(e) => onChange(e.target.value)}
-        // placeholder={placeholder} cần thì thêm
+        placeholder={placeholder}// cần thì thêm
       />
     </div>
   )
