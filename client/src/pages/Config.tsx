@@ -1,167 +1,237 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header/header.tsx';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
-import '../css/Config.css'; // Import CSS thông thường
+import '../css/Config.css';
 
 interface ConfigProps {
-    NumOfPage: number;
-    Time: number;
-    Max_Size: number;
-    TypeOfFile: string;
+  _id: string;
+  defaultPages: number;
+  permittedFileTypes: string[];
+  pageGrantDates: string[];
+  pricePerPage: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
-const Config: React.FC<ConfigProps> = ({ NumOfPage, Time, Max_Size, TypeOfFile }) => {
-    const [info, setInfo] = useState({
-        NumOfPage,
-        Time,
-        Max_Size,
-        TypeOfFile
+const Config: React.FC<ConfigProps> = ({
+  _id,
+  defaultPages,
+  permittedFileTypes = [],
+  pageGrantDates = [],
+  pricePerPage,
+  createdAt,
+  updatedAt,
+  __v
+}) => {
+  const [info, setInfo] = useState({
+    _id,
+    defaultPages,
+    permittedFileTypes,
+    pageGrantDates,
+    pricePerPage,
+    createdAt,
+    updatedAt,
+    __v
+  });
+
+  useEffect(() => {
+    // Kiểm tra sự thay đổi của props trước khi cập nhật trạng thái
+    setInfo(prevInfo => {
+      if (
+        prevInfo._id !== _id ||
+        prevInfo.defaultPages !== defaultPages ||
+        prevInfo.permittedFileTypes.join(',') !== permittedFileTypes.join(',') ||
+        prevInfo.pageGrantDates.join(',') !== pageGrantDates.join(',') ||
+        prevInfo.pricePerPage !== pricePerPage ||
+        prevInfo.createdAt !== createdAt ||
+        prevInfo.updatedAt !== updatedAt ||
+        prevInfo.__v !== __v
+      ) {
+        return {
+          _id,
+          defaultPages,
+          permittedFileTypes,
+          pageGrantDates,
+          pricePerPage,
+          createdAt,
+          updatedAt,
+          __v
+        };
+      }
+      return prevInfo; // Trả lại trạng thái hiện tại nếu không có sự thay đổi
     });
+  }, [_id, defaultPages, permittedFileTypes, pageGrantDates, pricePerPage, createdAt, updatedAt, __v]);
 
-    useEffect(() => {
-        setInfo({
-            NumOfPage,
-            Time,
-            Max_Size,
-            TypeOfFile
-        });
-    }, [NumOfPage, Time, Max_Size, TypeOfFile]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState({ ...info });
 
-    const initialState = {
-        NumOfPage: 100,
-        Time: 1,
-        Max_Size: 1000,
-        TypeOfFile: '.pdf, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .jpg, .jpeg, .png, .gif, .bmp, .txt, .rtf, .html, .zip, .rar, .7z, .tar, .gz, .tgz, .bz2'
-    };
+  const menuItems = [
+    { title: "Quản lý máy in", link: "/printmanagement" },
+    { title: "Quản lý cấu hình", link: "/config" },
+    { title: "Lịch sử in ấn", link: "/printhistory" },
+    { title: "Báo cáo trang in", link: "/trangin" },
+  ];
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalInfo, setModalInfo] = useState({ ...info });
+  const openModal = () => {
+    setModalInfo({ ...info });
+    setIsModalOpen(true);
+  };
 
-    // Danh sách menu
-    const menuItems = [
-        { title: "Quản lý máy in", link: "/printmanagement" },
-        { title: "Quản lý cấu hình", link: "/config" },
-        { title: "Lịch sử in ấn", link: "/printhistory" },
-        { title: "Báo cáo trang in", link: "/trangin" },
-    ];
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-    const openModal = () => {
-        setModalInfo({ ...info });
-        setIsModalOpen(true);
-    };
+  const changeInfo = () => {
+    setInfo(modalInfo);
+    setIsModalOpen(false);
+  };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+  const handleAddGrantDate = (date: string) => {
+    if (date) {
+      setModalInfo({
+        ...modalInfo,
+        pageGrantDates: [...modalInfo.pageGrantDates, date],
+      });
+    }
+  };
 
-    const changeInfo = () => {
-        setInfo(modalInfo);
-        setIsModalOpen(false);
-    };
+  const handleRemoveGrantDate = (date: string) => {
+    setModalInfo({
+      ...modalInfo,
+      pageGrantDates: modalInfo.pageGrantDates.filter(d => d !== date),
+    });
+  };
 
-    return (
-        <div>
-            <Sidebar menuItems={menuItems} />
-            <Header title='Mua thêm trang in' />
-            <div className="config-system-info-container">
-                <h2>Thông tin hệ thống</h2>
-                <table className="config-system-info-table">
-                    <tbody>
-                        <tr>
-                            <td className="config-info-label">Số lượng trang được cấp</td>
-                            <td className="config-info-value">{info.NumOfPage || initialState.NumOfPage} (A4)</td>
-                        </tr>
-                        <tr>
-                            <td className="config-info-label">Thời gian định kỳ cung cấp</td>
-                            <td className="config-info-value">{info.Time || initialState.Time} học kỳ</td>
-                        </tr>
-                        <tr>
-                            <td className="config-info-label">Kích thước tối đa</td>
-                            <td className="config-info-value">{info.Max_Size || initialState.Max_Size} KB</td>
-                        </tr>
-                        <tr>
-                            <td className="config-info-label">Loại tệp được chấp nhận</td>
-                            <td className="config-info-value">{info.TypeOfFile || initialState.TypeOfFile}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button className="config-change-btn" onClick={openModal}>
-                    Thay đổi thông tin
-                </button>
+  return (
+    <div>
+      <Sidebar menuItems={menuItems} />
+      <Header title="Mua thêm trang in" />
+      <div className="config-system-info-container">
+        <h2>Thông tin hệ thống</h2>
+        <table className="config-system-info-table">
+          <tbody>
+            <tr>
+              <td className="config-info-label">Số lượng trang được cấp</td>
+              <td className="config-info-value">{info.defaultPages || 100} (A4)</td>
+            </tr>
+            <tr>
+              <td className="config-info-label">Loại tệp được chấp nhận</td>
+              <td className="config-info-value">{info.permittedFileTypes.join(', ') || 'pdf, doc, docx'}</td>
+            </tr>
+            <tr>
+              <td className="config-info-label">Ngày cấp trang</td>
+              <td className="config-info-value">{info.pageGrantDates.join(', ') || '2024-01-01, 2024-02-01'}</td>
+            </tr>
+            <tr>
+              <td className="config-info-label">Giá mỗi trang</td>
+              <td className="config-info-value">{info.pricePerPage || 500} VND</td>
+            </tr>
+          </tbody>
+        </table>
+        <button className="config-change-btn" onClick={openModal}>
+          Thay đổi thông tin
+        </button>
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="config-modal-overlay">
+          <div className="config-modal-content">
+            <h3>Thay đổi thông tin hệ thống</h3>
+            <form>
+  <label>
+    <span>Số lượng trang được cấp:</span>
+    <input
+      type="number"
+      value={modalInfo.defaultPages}
+      onChange={(e) =>
+        setModalInfo({
+          ...modalInfo,
+          defaultPages: +e.target.value,
+        })
+      }
+    />
+  </label>
+  <label>
+    <span>Loại tệp được chấp nhận:</span>
+    <input
+      type="text"
+      value={modalInfo.permittedFileTypes.join(', ')}
+      onChange={(e) =>
+        setModalInfo({
+          ...modalInfo,
+          permittedFileTypes: e.target.value.split(',').map(type => type.trim()),
+        })
+      }
+    />
+  </label>
+  <label>
+    <span>Ngày cấp trang:</span>
+    <input
+      type="text"
+      value={modalInfo.pageGrantDates.join(', ')}
+      onChange={(e) =>
+        setModalInfo({
+          ...modalInfo,
+          pageGrantDates: e.target.value.split(',').map(date => date.trim()),
+        })
+      }
+    />
+  </label>
+  <label>
+    <span>Thêm ngày cấp trang:</span>
+    <input
+      type="text"
+      value=""
+      onChange={(e) => {
+        const newDate = e.target.value.trim();
+        if (newDate) {
+          setModalInfo({
+            ...modalInfo,
+            pageGrantDates: [...modalInfo.pageGrantDates, newDate],
+          });
+        }
+      }}
+    />
+  </label>
+  <label>
+    <span>Giá mỗi trang:</span>
+    <input
+      type="number"
+      value={modalInfo.pricePerPage}
+      onChange={(e) =>
+        setModalInfo({
+          ...modalInfo,
+          pricePerPage: +e.target.value,
+        })
+      }
+    />
+  </label>
+  <div className="config-modal-actions">
+    <button type="button" onClick={changeInfo}>
+      Lưu thay đổi
+    </button>
+    <button type="button" onClick={closeModal}>
+      Hủy
+    </button>
+  </div>
+</form>
+            <div>
+              <h4>Ngày cấp trang đã thêm</h4>
+              <ul>
+                {modalInfo.pageGrantDates.map((date) => (
+                  <li key={date}>
+                    {date} <button onClick={() => handleRemoveGrantDate(date)}>Xóa</button>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            {/* Modal */}
-            {isModalOpen && (
-                <div className="config-modal-overlay">
-                    <div className="config-modal-content">
-                        <h3>Thay đổi thông tin hệ thống</h3>
-                        <form>
-                            <label>
-                                Số lượng trang được cấp:
-                                <input
-                                    type="number"
-                                    value={modalInfo.NumOfPage}
-                                    onChange={(e) =>
-                                        setModalInfo({
-                                            ...modalInfo,
-                                            NumOfPage: +e.target.value,
-                                        })
-                                    }
-                                />
-                            </label>
-                            <label>
-                                Thời gian định kỳ cung cấp:
-                                <input
-                                    type="number"
-                                    value={modalInfo.Time}
-                                    onChange={(e) =>
-                                        setModalInfo({
-                                            ...modalInfo,
-                                            Time: +e.target.value,
-                                        })
-                                    }
-                                />
-                            </label>
-                            <label>
-                                Kích thước tối đa:
-                                <input
-                                    type="number"
-                                    value={modalInfo.Max_Size}
-                                    onChange={(e) =>
-                                        setModalInfo({
-                                            ...modalInfo,
-                                            Max_Size: +e.target.value,
-                                        })
-                                    }
-                                />
-                            </label>
-                            <label>
-                                Loại tệp được chấp nhận:
-                                <input
-                                    type="text"
-                                    value={modalInfo.TypeOfFile}
-                                    onChange={(e) =>
-                                        setModalInfo({
-                                            ...modalInfo,
-                                            TypeOfFile: e.target.value,
-                                        })
-                                    }
-                                />
-                            </label>
-                            <div className="config-modal-actions">
-                                <button type="button" onClick={changeInfo}>
-                                    Lưu thay đổi
-                                </button>
-                                <button type="button" onClick={closeModal}>
-                                    Hủy
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default Config;

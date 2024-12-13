@@ -5,9 +5,9 @@ interface ButtonProps {
 }
 const Button: React.FC<ButtonProps> = ({onClick}) => {
   return (
-    <div className='button-container'>
-      <button onClick={onClick}>Đăng nhập</button>
-    </div>
+    
+      <button className='button-container' onClick={onClick}>Đăng nhập</button>
+   
   )
 }
 

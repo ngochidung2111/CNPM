@@ -7,7 +7,7 @@ type PrintHistory = {
   _id: string;
   printerId: string;
   studentId: {
-    _id: string;
+    _id: string | null;
     name: string;
     email: string;
   };
@@ -44,7 +44,11 @@ const PrintHistorySSPS: React.FC = () => {
   useEffect(() => {
     const fetchPrintHistory = async () => {
       try {
-        const response = await fetch('https://1931603c-7652-4e64-aa9e-0c26a3c45d8e.mock.pstmn.io/his');
+        const response = await fetch('http://localhost:5000/api/printingLogs', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          }
+        });
         const data = await response.json();
         setPrintHistory(data);
       } catch (error) {
@@ -113,9 +117,9 @@ const PrintHistorySSPS: React.FC = () => {
             {currentHistory.map((history, index) => (
               <tr key={index}>
                 <td className="printhistoryssps-td">{history.printerId}</td>
-                <td className="printhistoryssps-td">{history.studentId._id}</td>
-                <td className="printhistoryssps-td">{history.studentId.name}</td>
-                <td className="printhistoryssps-td">{history.studentId.email}</td>
+                <td className="printhistoryssps-td">{history.studentId?._id ?? 'N/A'}</td>
+                <td className="printhistoryssps-td">{history.studentId?.name ?? 'N/A'}</td>
+                <td className="printhistoryssps-td">{history.studentId?.email ?? 'N/A'}</td>
                 <td className="printhistoryssps-td">{history.fileName}</td>
                 <td className="printhistoryssps-td">{new Date(history.startTime).toLocaleString()}</td>
                 <td className="printhistoryssps-td">{history.status}</td>

@@ -20,4 +20,4 @@ const AuthorizationItem: React.FC<authorizationItem> = ({avatar, object}) => {
   )
 }
 
-export default AuthorizationItem
+export default AuthorizationItem;
