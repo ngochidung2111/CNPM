@@ -66,11 +66,21 @@ const Login: React.FC = () => {
       body: JSON.stringify(formData),
     }).then((response) => response.json()).then((data) => responseData = data)
     if(responseData.success) {
+      // đang check only token nên từ từ tính 
+      // // thêm thời điểm hết hạn là 3 ngày, nào dùng check phát quá hạn thì cút
+      // const now = new Date();
+      // const expiry = now.getTime() + 3 * 24 * 60 * 60 * 1000;
+      // const token = {
+      //   accessToken: responseData.accessToken,
+      //   expiry: expiry
+      // }
+      // // lưu vào local storage để dùng cho các trang cần phải đăng nhập
       localStorage.setItem('accessToken', responseData.accessToken);
       localStorage.setItem('role',role);
       localStorage.setItem('id', responseData.userData._id);
       navigator('/');
       console.log('Login successfully', responseData);
+
     }
     else {
       alert(responseData.errors);
@@ -78,10 +88,10 @@ const Login: React.FC = () => {
   }
 
   const fieldInfo = [
-    { title: 'Tài khoản', placeholder: 'Nhập email/SĐT', type: 'text' },
-    { title: 'Mật khẩu', placeholder: 'Nhập mật khẩu', type: 'password' }
-  ];
 
+    {title: 'Mã số sinh viên', placeholder: 'Nhập mã số sinh viên', type: 'text'},
+    {title: 'Mật khẩu', placeholder: 'Nhập mật khẩu', type: 'password'}
+  ]
   return (
     <div className='login-container'>
         <img src={require('../components/assets/image/hcmut.png')} alt="logo" />

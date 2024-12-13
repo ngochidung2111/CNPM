@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react'
 import Button from '../components/InfoUserItems/Button.tsx'
 import InfoFrame from '../components/InfoUserItems/InfoFrame.tsx'
 import Header from '../components/header/header.tsx'
-import Sidebar from './../components/sidebars/Sidebar.tsx';
-import { data } from 'react-router-dom';
 interface Info {
   label: string,
   value: string
 }
-
+export let fullName:string;
+export let avatar:string;
 
 const InfoUser: React.FC = () => {
   
   const [info, setInfo] = useState<Info[]>([]);
-
   useEffect(() => {
     
 
-    const id = localStorage.getItem('id') // how to get it???????????
+
+    const id = localStorage.getItem('id')
+
     let fetchedData;
     
     const fetchData = async () => {
@@ -68,9 +68,10 @@ const InfoUser: React.FC = () => {
                 value: '0909090909'
               }]
               console.log('fetchedInfo: ', fetchedInfo);
+              fullName = fetchedData.name;
+              avatar = fetchedData.avatar || 'https://cellphones.com.vn/sforum/wp-content/uploads/2022/09/4-5.jpg';
               
             setInfo(fetchedInfo);
-            console.log();
             
           }
         }
@@ -164,7 +165,6 @@ const InfoUser: React.FC = () => {
   return (
     <div>
       <Header title='Thông tin cá nhân'/>
-      <Sidebar menuItems={menuItems}/>
       <div className='info-user' style={{marginTop: '100px'}}>
         <InfoFrame 
           title="THÔNG TIN CÁ NHÂN" 

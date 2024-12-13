@@ -3,12 +3,13 @@
   flex-direction: column;
   align-items: left;
 }
-.signup-form-field span {
+.signup-form-field label {
   font-family: EB Garamond;
   font-size: 24px;
   font-weight: 700;
   line-height: 32px;
   padding-left: 16px;
+  cursor: text;
 }
 .signup-form-field input {
   width: 280px;
@@ -24,14 +25,15 @@
   line-height: 28px;
 }
 .signup-form-field input::placeholder {
-  color: #e1f0f347;
+  color: #dcf7fc47;
 }
 .signup-form-field input:hover {
   border: 1px solid #000000;
+  outline: 1px solid #000000;
 }
 .signup-form-field input:focus {
-  outline: 1px solid #150496;
-  border: 1px solid #150496;
+  outline: 1px solid #1bdcac;
+  border: 1px solid #2fddc5;
 }
 .signup-form-button {
   display: flex;
@@ -47,6 +49,7 @@
   margin-top: 20px;
   transition: all 1s ease;
   margin-bottom: 10px;
+  border-radius: 24px;
 }
 .signup-form-button button {
   color: white;
@@ -100,5 +103,5 @@
   text-decoration-skip-ink: none;
 }
 .signup-have-account span:last-child:hover {
-    color: #4366d7;
+    color: #607ddc;
 }

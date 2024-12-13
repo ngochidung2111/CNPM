@@ -1,6 +1,7 @@
 import React from "react";
 import "./header.css"; // Import file CSS để styling
 import { useNavigate } from "react-router-dom";
+import { fullName, avatar } from '../../pages/InfoUser.tsx'
 interface HeaderProps {
   title: string;
 }
@@ -16,9 +17,9 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         <span className="title">{title}</span>
       </div>
       <div className="header-right" style={{cursor: 'pointer'}} onClick={redirect}>
-        <span className="username">Nguyễn Văn A</span>
+        <span className="username">{fullName}</span>
         <img
-          src="https://via.placeholder.com/40" // Thay link bằng avatar thực tế
+          src={avatar} // Thay link bằng avatar thực tế
           alt="Avatar"
           className="avatar"
           
