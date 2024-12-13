@@ -5,8 +5,8 @@ const ErrorPage: React.FC = () => {
     const navigate = useNavigate();
 
     const goHome = () => {
-        navigate('/HomePage');
-    };
+        navigate('/');
+    }; 
 
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>

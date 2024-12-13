@@ -15,13 +15,13 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         <img src={require('./hcmut.png')} className="logo" alt="Logo" />
         <span className="title">{title}</span>
       </div>
-      <div className="header-right" style={{cursor: 'pointer'}} onClick={redirect}>
-        <span className="username">Nguyễn Văn A</span>
+      <div className="header-right" style={{cursor: 'pointer'}} >
+        <span className="username" onClick={redirect}>Nguyễn Văn A</span>
         <img
           src="https://via.placeholder.com/40" // Thay link bằng avatar thực tế
           alt="Avatar"
           className="avatar"
-          
+          onClick={redirect}
           />
          
           <button
