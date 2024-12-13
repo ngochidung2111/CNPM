@@ -81,7 +81,7 @@ const Login: React.FC = () => {
   }
 
   const fieldInfo = [
-    {title: 'Mã số sinh viên', placeholder: 'Nhập MSSV', type: 'text'},
+    {title: 'Mã số sinh viên', placeholder: 'Nhập mã số sinh viên', type: 'text'},
     {title: 'Mật khẩu', placeholder: 'Nhập mật khẩu', type: 'password'}
   ]
   return (
