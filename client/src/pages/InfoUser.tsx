@@ -17,7 +17,7 @@ const InfoUser: React.FC = () => {
   useEffect(() => {
     
 
-    const id = 2211651 // how to get it???????????
+    const id = localStorage.getItem('id') // how to get it???????????
     let fetchedData;
     
     const fetchData = async () => {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/header/header.tsx';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
 import '../css/PrintManagement.css'; // Import file CSS để styling
+import { useNavigate } from 'react-router-dom';
 
 type Printer = {
   _id: string;
@@ -21,31 +22,13 @@ type Printer = {
 };
 
 const PrintManagement: React.FC = () => {
-  const [printers, setPrinters] = useState<Printer[]>([
-    {
-      _id: "67515f302c80dc797058bb0f",
-      printerId: "23345671",
-      brand: "HP",
-      model: "LaserJet Pro",
-      description: "A high quality printer",
-      isEnabled: true,
-      createdAt: "2024-12-05T08:07:12.886Z",
-      updatedAt: "2024-12-05T08:07:12.886Z",
-      __v: 0,
-      location: {
-        campus: "CS1",
-        building: "H6",
-        room: "120"
-      }
-    },
-    // Add other printers here
-  ]);
-
+  const [printers, setPrinters] = useState<Printer[]>([]);
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
   const printersPerPage = 5; // Số lượng máy in mỗi trang
-
+  const navigate = useNavigate();
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [isAddPrinterModalVisible, setIsAddPrinterModalVisible] = useState(false); // State cho modal thêm máy in
+  const [isEditPrinterModalVisible, setIsEditPrinterModalVisible] = useState(false); // State cho modal sửa máy in
   const [newPrinter, setNewPrinter] = useState<Printer>({
     _id: '',
     printerId: '',
@@ -64,6 +47,7 @@ const PrintManagement: React.FC = () => {
   });
 
   const [selectedPrinterIndex, setSelectedPrinterIndex] = useState<number | null>(null);
+  const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<Printer | null>(null);
 
   const menuItems = [
     { title: "Quản lý máy in", link: "/printmanagement" },
@@ -71,6 +55,25 @@ const PrintManagement: React.FC = () => {
     { title: "Lịch sử in ấn", link: "/printhistory" },
     { title: "Báo cáo trang in", link: "/trangin" },
   ];
+
+  useEffect(() => {
+    const fetchPrinters = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/printers', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
+        const data = await response.json();
+        setPrinters(data);
+      } catch (error) {
+        console.error('Error fetching printers:', error);
+        navigate('/error');
+      }
+    };
+
+    fetchPrinters();
+  }, []);
 
   const handleStatusChange = (index: number) => {
     setSelectedPrinterIndex(index);
@@ -108,31 +111,128 @@ const PrintManagement: React.FC = () => {
     setIsAddPrinterModalVisible(false);
   };
 
+  // Hàm mở modal sửa máy in
+  const openEditPrinterModal = (index: number) => {
+    setSelectedPrinterForEdit(printers[index]);
+    setIsEditPrinterModalVisible(true);
+  };
+
+  // Hàm đóng modal sửa máy in
+  const closeEditPrinterModal = () => {
+    setIsEditPrinterModalVisible(false);
+  };
+
   // Hàm thêm máy in mới
-  const handleAddPrinter = () => {
-    setPrinters([...printers, newPrinter]);
-    setNewPrinter({
-      _id: '',
-      printerId: '',
-      brand: '',
-      model: '',
-      description: '',
-      isEnabled: true,
-      createdAt: '',
-      updatedAt: '',
-      __v: 0,
-      location: {
-        campus: '',
-        building: '',
-        room: ''
+  const handleAddPrinter = async () => {
+    const requestBody = {
+      printerId: newPrinter.printerId,
+      brand: newPrinter.brand,
+      model: newPrinter.model,
+      description: newPrinter.description,
+      location: newPrinter.location,
+    };
+  
+    console.log('Request Body:', requestBody);
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/printers/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (response.ok) {
+        const addedPrinter = await response.json();
+        setPrinters([...printers, addedPrinter]);
+        setNewPrinter({
+          _id: '',
+          printerId: '',
+          brand: '',
+          model: '',
+          description: '',
+          isEnabled: true,
+          createdAt: '',
+          updatedAt: '',
+          __v: 0,
+          location: {
+            campus: '',
+            building: '',
+            room: ''
+          }
+        }); // Reset form
+        closeAddPrinterModal();
+      } else {
+        console.error('Failed to add printer:', response.statusText);
       }
-    }); // Reset form
-    closeAddPrinterModal();
+    } catch (error) {
+      console.error('Error adding printer:', error);
+    }
   };
 
   // Hàm thay đổi giá trị trường input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: string) => {
-    setNewPrinter({ ...newPrinter, [field]: e.target.value });
+    if (field.startsWith('location.')) {
+      const locationField = field.split('.')[1];
+      setNewPrinter({
+        ...newPrinter,
+        location: {
+          ...newPrinter.location,
+          [locationField]: e.target.value
+        }
+      });
+    } else {
+      setNewPrinter({ ...newPrinter, [field]: e.target.value });
+    }
+  };
+
+  // Hàm thay đổi giá trị trường input cho sửa máy in
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: string) => {
+    if (selectedPrinterForEdit) {
+      if (field.startsWith('location.')) {
+        const locationField = field.split('.')[1];
+        setSelectedPrinterForEdit({
+          ...selectedPrinterForEdit,
+          location: {
+            ...selectedPrinterForEdit.location,
+            [locationField]: e.target.value
+          }
+        });
+      } else {
+        setSelectedPrinterForEdit({ ...selectedPrinterForEdit, [field]: e.target.value });
+      }
+    }
+  };
+
+  // Hàm xử lý sửa máy in
+  const handleEditPrinter = async () => {
+    if (selectedPrinterForEdit) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/printers/${selectedPrinterForEdit._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            brand: selectedPrinterForEdit.brand,
+            location: selectedPrinterForEdit.location,
+          }),
+        });
+
+        if (response.ok) {
+          const updatedPrinters = printers.map((printer) =>
+            printer._id === selectedPrinterForEdit._id ? selectedPrinterForEdit : printer
+          );
+          setPrinters(updatedPrinters);
+          closeEditPrinterModal();
+        } else {
+          console.error('Failed to update printer');
+        }
+      } catch (error) {
+        console.error('Error updating printer:', error);
+      }
+    }
   };
 
   // Tính toán các máy in cần hiển thị trên trang hiện tại
@@ -148,7 +248,7 @@ const PrintManagement: React.FC = () => {
   return (
     <div>
       <Sidebar menuItems={menuItems} />
-      <Header title='Mua thêm trang in' />
+      <Header title='Lịch sử mua trang in' />
       <div className="table-container">
         <table>
           <thead>
@@ -175,6 +275,10 @@ const PrintManagement: React.FC = () => {
                   {/* Nút thay đổi trạng thái */}
                   <button onClick={() => handleStatusChange(index)}>
                     Thay đổi trạng thái
+                  </button>
+                  {/* Nút sửa máy in */}
+                  <button onClick={() => openEditPrinterModal(index)}>
+                    Sửa
                   </button>
                 </td>
               </tr>
@@ -274,6 +378,41 @@ const PrintManagement: React.FC = () => {
             <div className="modal-actions">
               <button onClick={handleAddPrinter}>Thêm máy in</button>
               <button onClick={closeAddPrinterModal}>Hủy</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal sửa máy in */}
+      {isEditPrinterModalVisible && selectedPrinterForEdit && (
+        <div className="edit-printer-modal">
+          <div className="edit-printer-modal-content">
+            <h3>Sửa máy in</h3>
+            <label>Thương hiệu:</label>
+            <input
+              type="text"
+              value={selectedPrinterForEdit.brand}
+              onChange={(e) => handleEditInputChange(e, 'brand')}
+            />
+            <label>Nơi đặt:</label>
+            <input
+              type="text"
+              value={selectedPrinterForEdit.location.campus}
+              onChange={(e) => handleEditInputChange(e, 'location.campus')}
+            />
+            <input
+              type="text"
+              value={selectedPrinterForEdit.location.building}
+              onChange={(e) => handleEditInputChange(e, 'location.building')}
+            />
+            <input
+              type="text"
+              value={selectedPrinterForEdit.location.room}
+              onChange={(e) => handleEditInputChange(e, 'location.room')}
+            />
+            <div className="modal-actions">
+              <button onClick={handleEditPrinter}>Lưu</button>
+              <button onClick={closeEditPrinterModal}>Hủy</button>
             </div>
           </div>
         </div>

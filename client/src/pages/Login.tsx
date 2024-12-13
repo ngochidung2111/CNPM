@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
-import Field from '../components/LoginItems/Field.tsx'
-import Forgot from '../components/LoginItems/Forgot.tsx'
-import Button from '../components/LoginItems/Button.tsx'
-import NoAccount from '../components/LoginItems/NoAccount.tsx'
-import '../css/Login.css'
-import { useLocation } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Field from '../components/LoginItems/Field.tsx';
+import Forgot from '../components/LoginItems/Forgot.tsx';
+import Button from '../components/LoginItems/Button.tsx';
+import NoAccount from '../components/LoginItems/NoAccount.tsx';
+import '../css/Login.css';
 
 const Login: React.FC = () => {
+  // const navigate = useNavigate()
   const location = useLocation();
   const { role } = location.state || {}
+  const navigator = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
     password: '',
     role: role || '',
   });
   const [hasError, setHasError] = useState([false, false]);
+
   const handleInputChange = (name: string, value: string) => {
     setHasError([false, false]);
     setFormData(prev => ({
@@ -22,7 +25,8 @@ const Login: React.FC = () => {
       [name]: value
     }));
   };
-  const handleLogin = () => {
+
+  const handleLogin = async () => {
     const newHasError = [...hasError];
 
     if (formData.id.trim() === '') {   ////////
@@ -30,7 +34,7 @@ const Login: React.FC = () => {
     } else {
       newHasError[0] = false;
     }
-    
+
     if (formData.password.trim() === '') {
       newHasError[1] = true;
     } else {
@@ -41,6 +45,7 @@ const Login: React.FC = () => {
     if (!(newHasError[0] || newHasError[1])) {
       console.log('Form data:', formData);
       login();
+      // check login valid here
     }
     console.log('click');
   };
@@ -62,7 +67,10 @@ const Login: React.FC = () => {
     }).then((response) => response.json()).then((data) => responseData = data)
     if(responseData.success) {
       localStorage.setItem('accessToken', responseData.accessToken);
-      window.location.replace('/');
+      localStorage.setItem('role',role);
+      localStorage.setItem('id', responseData.userData._id);
+      navigator('/');
+      console.log('Login successfully', responseData);
     }
     else {
       alert(responseData.errors);
@@ -70,9 +78,10 @@ const Login: React.FC = () => {
   }
 
   const fieldInfo = [
-    {title: 'Tài khoản', placeholder: 'Nhập email/SĐT', type: 'text'},
-    {title: 'Mật khẩu', placeholder: 'Nhập mật khẩu', type: 'password'}
-  ]
+    { title: 'Tài khoản', placeholder: 'Nhập email/SĐT', type: 'text' },
+    { title: 'Mật khẩu', placeholder: 'Nhập mật khẩu', type: 'password' }
+  ];
+
   return (
     <div className='login-container'>
         <img src={require('../components/assets/image/hcmut.png')} alt="logo" />
@@ -98,7 +107,7 @@ const Login: React.FC = () => {
         </div>
         
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
