@@ -12,7 +12,7 @@ const PurchasePage: React.FC = () => {
   const [paymentChecking, setPaymentChecking] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
-  const pricePerPage = 400;
+  const pricePerPage = 300;
 
   const getStudentData = () => {
     return {
