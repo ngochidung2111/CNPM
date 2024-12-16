@@ -8,6 +8,9 @@
     flex-direction: column;
     cursor: pointer;
 }
+.item:active {
+    background-color: #35eda3;
+}
 .item:hover {
     scale: 1.03;
     background-color: #e6fa72;

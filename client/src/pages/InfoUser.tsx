@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import '../css/InfoUser.css'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/InfoUserItems/Button.tsx'
 import InfoFrame from '../components/InfoUserItems/InfoFrame.tsx'
 import Header from '../components/header/header.tsx'
@@ -10,12 +12,29 @@ export let fullName:string;
 export let avatar:string;
 
 const InfoUser: React.FC = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Please login first bro');
+      // chỉnh lại log console cho k hiển thị 2 lần cũng là 1 lựa chọn
+      setTimeout(() => {
+        navigate('/login')
+      }, 1000);
+    } else {
+      setIsLoading(false);
+    }
+  }, [navigate]);
   
   const [info, setInfo] = useState<Info[]>([]);
   useEffect(() => {
     
 
+
     const id = localStorage.getItem('id')
+
     let fetchedData;
     
     const fetchData = async () => {
@@ -43,7 +62,7 @@ const InfoUser: React.FC = () => {
               },
               {
                 label: 'Khoa',
-                value: 'Khoa hoc va Ky thuat May tinh'
+                value: 'Khoa học và Kỹ thuật Máy tính'
               },
               {
                 label: 'Ngày tháng năm sinh',
@@ -84,14 +103,6 @@ const InfoUser: React.FC = () => {
 
   }, []);
 
-
-
-
-  const menuItems = [
-    { title: "In tài liệu", link: "/print" },
-    { title: "Mua thêm trang in", link: "/mua-them-trang-in" },
-    { title: "Xem lịch sử in", link: "/lich-su-in" },
-  ];
   const [clickButton, setClickButton] = useState(false);
     const [lastInfo, setLastInfo] = useState(info)
     const changeDatabase = async (newInfo) => {
@@ -161,7 +172,11 @@ const InfoUser: React.FC = () => {
   //////////////////// why not change there //////////////////
   
   return (
+    
     <div>
+      {!isLoading ?      
+       <React.Fragment>
+
       <Header title='Thông tin cá nhân'/>
       <div className='info-user' style={{marginTop: '100px'}}>
         <InfoFrame 
@@ -181,6 +196,10 @@ const InfoUser: React.FC = () => {
           <Button text="Hủy" color="#EB4A4A" onClick={handleCancel} />
         </div>
       </div>
+      </React.Fragment>
+
+      : <div className='loading-spinner'>Loading...</div>
+      }
     </div>
   )
 }

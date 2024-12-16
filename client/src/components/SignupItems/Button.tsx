@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './SignupItems.css'
-const Button: React.FC<{onClick: () => void}> = ({onClick}) => {
-  return (
-    <div className='signup-form-button'>
-      <button onClick={onClick}>XÁC NHẬN</button>
-    </div>
-  )
+interface ButtonProps {
+  onClick: () => void;
 }
+const Button: React.FC<ButtonProps> = ({ onClick }) => {
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        onClick();
+      }
+    };
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [onClick]);
+
+  return (
+    <button className='signup-form-button' onClick={onClick}>Xác nhận</button>
+  );
+};
 
 export default Button

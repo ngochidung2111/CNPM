@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Header from "../components/header/header.tsx";
 import Sidebar from "../components/sidebars/Sidebar.tsx";
 import "../css/PurchaseHistory.css";
@@ -17,15 +17,23 @@ interface Transaction {
 
 const PurchaseHistory = () => {
   const [historyData, setHistoryData] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTransactionData = async () => {
       try {
-        const accessToken =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIyMjExNjE0Iiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE3MzQwNTM0MTUsImV4cCI6MTczNDEzOTgxNX0.cEBN9wkxyjUXvVAbK22p1vBVZHoZ89FTfjSMujJTq8E";
+        const accessToken = localStorage.getItem("accessToken");
+        const studentId = localStorage.getItem("id");
+
+        if (!studentId || !accessToken) {
+          console.warn("Missing student ID or access token.");
+          setHistoryData([]);
+          setLoading(false);
+          return;
+        }
 
         const response = await axios.get(
-          "http://localhost:5000/api/transaction/student/2212922",
+          `http://localhost:5000/api/transaction/student/${studentId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -33,19 +41,24 @@ const PurchaseHistory = () => {
           }
         );
 
-        const formattedData: Transaction[] = response.data.map((transaction: any) => ({
-          id: transaction._id,
-          time: new Date(transaction.createdAt).toLocaleString("vi-VN"),
-          number: transaction.pageAmount,
-          total: transaction.amount,
-          paymentMethod: transaction.paymentMethod,
-          status: transaction.status,
-          payOSId: transaction.payOSId,
-        }));
+        const formattedData: Transaction[] = response.data.map(
+          (transaction: any) => ({
+            id: transaction._id,
+            time: new Date(transaction.createdAt).toLocaleString("vi-VN"),
+            number: transaction.pageAmount,
+            total: transaction.amount,
+            paymentMethod: transaction.paymentMethod,
+            status: transaction.status,
+            payOSId: transaction.payOSId,
+          })
+        );
 
         setHistoryData(formattedData);
       } catch (error) {
         console.error("Error fetching transaction data:", error);
+        setHistoryData([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -71,17 +84,31 @@ const PurchaseHistory = () => {
               </tr>
             </thead>
             <tbody>
-              {historyData.map((record, index) => (
-                <tr key={index}>
-                  <td>{record.id}</td>
-                  <td>{record.time}</td>
-                  <td>{record.number}</td>
-                  <td>{record.total.toLocaleString("vi-VN")}</td>
-                  <td>{record.paymentMethod}</td>
-                  <td>{record.status}</td>
-                  <td>{record.payOSId}</td>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center" }}>
+                    Đang tải dữ liệu...
+                  </td>
                 </tr>
-              ))}
+              ) : historyData.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center" }}>
+                    Không có giao dịch nào
+                  </td>
+                </tr>
+              ) : (
+                historyData.map((record, index) => (
+                  <tr key={index}>
+                    <td>{record.id}</td>
+                    <td>{record.time}</td>
+                    <td>{record.number}</td>
+                    <td>{record.total.toLocaleString("vi-VN")}</td>
+                    <td>{record.paymentMethod}</td>
+                    <td>{record.status}</td>
+                    <td>{record.payOSId}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

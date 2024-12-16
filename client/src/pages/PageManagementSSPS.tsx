@@ -1,31 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/header/header.tsx';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
-import '../css/PageManagementSSPS.css'; // Import CSS for styling
-
+import '../css/PageManagementSSPS.css';
+import { useNavigate } from 'react-router-dom';
 type PrintPage = {
   _id: string;
-  mssv: string;
-  name: string;
-  date: string;
-  pages: number;
+  studentId: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  amount: number;
+  pageAmount: number;
+  paymentMethod: string;
+  status: string;
+  payOSId: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 };
 
 const PrintPageManagement: React.FC = () => {
-  const [printPages, setPrintPages] = useState<PrintPage[]>([
-    {
-      _id: "1",
-      mssv: "12345678",
-      name: "Nguyen Van A",
-      date: "2024-12-05T08:07:12.886Z",
-      pages: 50,
-    },
-    // Add other print page records here
-  ]);
-
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const pagesPerPage = 5; // Number of records per page
-
+  const [printPages, setPrintPages] = useState<PrintPage[]>([]);
+  const navigate = useNavigate();
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [selectedPageIndex, setSelectedPageIndex] = useState<number | null>(null);
 
@@ -35,6 +32,30 @@ const PrintPageManagement: React.FC = () => {
     { title: "Lịch sử in ấn", link: "/printhistory" },
     { title: "Báo cáo trang in", link: "/trangin" },
   ];
+
+  useEffect(() => {
+    const fetchPrintPages = async () => {
+      const accessToken = localStorage.getItem('accessToken');
+      try {
+        const response = await fetch('http://localhost:5000/api/transaction', {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPrintPages(data);
+      } catch (error) {
+        console.error('Error fetching print pages:', error);
+        navigate('/error');
+      }
+    };
+
+    fetchPrintPages();
+  }, []);
 
   const handleDeletePage = (index: number) => {
     setSelectedPageIndex(index);
@@ -59,16 +80,6 @@ const PrintPageManagement: React.FC = () => {
     setIsConfirmationVisible(false);
   };
 
-  // Calculate records to display on the current page
-  const indexOfLastPage = currentPage * pagesPerPage;
-  const indexOfFirstPage = indexOfLastPage - pagesPerPage;
-  const currentPages = printPages.slice(indexOfFirstPage, indexOfLastPage);
-
-  // Change page
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
-  const totalPages = Math.ceil(printPages.length / pagesPerPage); // Total pages
-
   return (
     <div>
       <Sidebar menuItems={menuItems} />
@@ -79,18 +90,30 @@ const PrintPageManagement: React.FC = () => {
             <tr>
               <th className="printpage-th">MSSV</th>
               <th className="printpage-th">Tên</th>
-              <th className="printpage-th">Ngày</th>
+              <th className="printpage-th">Email</th>
+              <th className="printpage-th">Số tiền</th>
               <th className="printpage-th">Số trang</th>
+              <th className="printpage-th">Phương thức thanh toán</th>
+              <th className="printpage-th">Trạng thái</th>
+              <th className="printpage-th">Mã thanh toán</th>
+              <th className="printpage-th">Ngày tạo</th>
+              <th className="printpage-th">Ngày cập nhật</th>
               <th className="printpage-th">Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {currentPages.map((page, index) => (
+            {printPages.map((page, index) => (
               <tr key={index}>
-                <td className="printpage-td">{page.mssv}</td>
-                <td className="printpage-td">{page.name}</td>
-                <td className="printpage-td">{new Date(page.date).toLocaleString()}</td>
-                <td className="printpage-td">{page.pages}</td>
+                <td className="printpage-td">{page.studentId._id}</td>
+                <td className="printpage-td">{page.studentId.name}</td>
+                <td className="printpage-td">{page.studentId.email}</td>
+                <td className="printpage-td">{page.amount}</td>
+                <td className="printpage-td">{page.pageAmount}</td>
+                <td className="printpage-td">{page.paymentMethod}</td>
+                <td className="printpage-td">{page.status}</td>
+                <td className="printpage-td">{page.payOSId}</td>
+                <td className="printpage-td">{new Date(page.createdAt).toLocaleString()}</td>
+                <td className="printpage-td">{new Date(page.updatedAt).toLocaleString()}</td>
                 <td className="printpage-td">
                   {/* Delete button */}
                   <button className="printpage-button" onClick={() => handleDeletePage(index)}>
@@ -101,25 +124,6 @@ const PrintPageManagement: React.FC = () => {
             ))}
           </tbody>
         </table>
-
-        {/* Pagination */}
-        <div className="printpage-pagination">
-          <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
-            Trước
-          </button>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => paginate(index + 1)}
-              className={currentPage === index + 1 ? "printpage-active" : ""}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
-            Sau
-          </button>
-        </div>
       </div>
 
       {/* Confirmation modal */}

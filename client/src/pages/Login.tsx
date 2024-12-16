@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
-import Field from '../components/LoginItems/Field.tsx'
-import Forgot from '../components/LoginItems/Forgot.tsx'
-import Button from '../components/LoginItems/Button.tsx'
-import NoAccount from '../components/LoginItems/NoAccount.tsx'
-import '../css/Login.css'
-import { useLocation } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Field from '../components/LoginItems/Field.tsx';
+import Forgot from '../components/LoginItems/Forgot.tsx';
+import Button from '../components/LoginItems/Button.tsx';
+import NoAccount from '../components/LoginItems/NoAccount.tsx';
+import '../css/Login.css';
 
 const Login: React.FC = () => {
+  // const navigate = useNavigate()
   const location = useLocation();
   const { role } = location.state || {}
+  const navigator = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
     password: '',
     role: role || '',
   });
   const [hasError, setHasError] = useState([false, false]);
+
   const handleInputChange = (name: string, value: string) => {
     setHasError([false, false]);
     setFormData(prev => ({
@@ -22,7 +25,8 @@ const Login: React.FC = () => {
       [name]: value
     }));
   };
-  const handleLogin = () => {
+
+  const handleLogin = async () => {
     const newHasError = [...hasError];
 
     if (formData.id.trim() === '') {   ////////
@@ -30,7 +34,7 @@ const Login: React.FC = () => {
     } else {
       newHasError[0] = false;
     }
-    
+
     if (formData.password.trim() === '') {
       newHasError[1] = true;
     } else {
@@ -40,17 +44,18 @@ const Login: React.FC = () => {
 
     if (!(newHasError[0] || newHasError[1])) {
       console.log('Form data:', formData);
-      login();
+      if(formData.role==='') {
+        alert('Vui lòng chọn loại đăng nhập(role)')
+        setTimeout(() => navigator('/authorization'), 1000)
+      }
+      else {
+        login();
+      }
     }
     console.log('click');
   };
   const login = async () => {
     console.log("login before executing", formData);
-    // issue: email --> id ? , dang set theo database
-    // chua bao ve url
-    ////
-
-
     let responseData;
     await fetch('http://localhost:5000/api/auth/login', {
       method: 'POST',
@@ -61,27 +66,23 @@ const Login: React.FC = () => {
       body: JSON.stringify(formData),
     }).then((response) => response.json()).then((data) => responseData = data)
     if(responseData.success) {
-      // đang check only token nên từ từ tính 
-      // // thêm thời điểm hết hạn là 3 ngày, nào dùng check phát quá hạn thì cút
-      // const now = new Date();
-      // const expiry = now.getTime() + 3 * 24 * 60 * 60 * 1000;
-      // const token = {
-      //   accessToken: responseData.accessToken,
-      //   expiry: expiry
-      // }
-      // // lưu vào local storage để dùng cho các trang cần phải đăng nhập
+      // lưu vào local storage để dùng cho các trang cần phải đăng nhập
       localStorage.setItem('accessToken', responseData.accessToken);
       localStorage.setItem('role',role);
-      localStorage.setItem('id', responseData.userData._id); 
-      window.location.replace('/home');
+      localStorage.setItem('id', responseData.userData._id);
+      localStorage.setItem('name', responseData.userData.name);
+      navigator('/');
+      console.log('Login successfully', responseData);
+
     }
     else {
-      alert(responseData.errors);
+      alert(`responseData.errors:  ${responseData.errors}`);
     }
   }
 
   const fieldInfo = [
-    {title: 'Mã số sinh viên', placeholder: 'Nhập MSSV', type: 'text'},
+
+    {title: 'Mã số sinh viên', placeholder: 'Nhập mã số sinh viên', type: 'text'},
     {title: 'Mật khẩu', placeholder: 'Nhập mật khẩu', type: 'password'}
   ]
   return (
@@ -109,7 +110,7 @@ const Login: React.FC = () => {
         </div>
         
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -23,55 +23,80 @@ interface TotalPages {
 const HistoryPage = () => {
   const [historyData, setHistoryData] = useState<PrintJob[]>([]);
   const [totalPages, setTotalPages] = useState<TotalPages>({ A4: 0, A3: 0 });
+  const [startDate, setStartDate] = useState<string>("2024-01-01");
+  const [endDate, setEndDate] = useState<string>("2024-12-31");
+
+  const fetchHistoryData = async () => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const studentId = localStorage.getItem('id');
+    const response = await axios.get(
+      `http://localhost:5000/api/printingLogs/date/${studentId}?startDate=${startDate}&endDate=${endDate}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const { printJobs, totalPages } = response.data;
+
+    if (printJobs && printJobs.length > 0) {
+      const formattedData: PrintJob[] = printJobs.map((job: any) => ({
+        printerId: job.printerId,
+        printTime: new Date(job.startTime).toLocaleString("vi-VN"),
+        documentName: job.fileName,
+        paperSize: job.properties.paperSize,
+        pages: job.properties.pages,
+        copies: job.properties.copies,
+        isDoubleSided: job.properties.isDoubleSided ? "Có" : "Không",
+      }));
+
+      setHistoryData(formattedData);
+      setTotalPages(totalPages);
+    } else {
+      setHistoryData([]); // Không có dữ liệu lịch sử
+    }
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      console.warn("No history data found for this student.");
+      setHistoryData([]);
+    } else {
+      console.error("Error fetching history data:", error);
+    }
+  }
+};
 
   useEffect(() => {
-    const fetchHistoryData = async () => {
-      try {
-        const accessToken =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIyMjExNjE0Iiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE3MzQwNTM0MTUsImV4cCI6MTczNDEzOTgxNX0.cEBN9wkxyjUXvVAbK22p1vBVZHoZ89FTfjSMujJTq8E";
-
-        const response = await axios.get(
-          "http://localhost:5000/api/printingLogs/date/2212922?startDate=2024-01-01&endDate=2024-12-31",
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        const { printJobs, totalPages } = response.data;
-
-        const formattedData: PrintJob[] = printJobs.map((job: any) => ({
-          printerId: job.printerId,
-          printTime: new Date(job.startTime).toLocaleString("vi-VN"),
-          documentName: job.fileName,
-          paperSize: job.properties.paperSize,
-          pages: job.properties.pages,
-          copies: job.properties.copies,
-          isDoubleSided: job.properties.isDoubleSided ? "Có" : "Không",
-        }));
-
-        setHistoryData(formattedData);
-        setTotalPages(totalPages);
-      } catch (error) {
-        console.error("Error fetching history data:", error);
-      }
-    };
-
     fetchHistoryData();
-  }, []);
+  }, [startDate, endDate]); // Gọi lại khi `startDate` hoặc `endDate` thay đổi
 
   return (
     <div>
       <Sidebar menuItems={menuItems} />
       <Header title="Xem lịch sử in" />
       <div className="HistoryPage-content">
-        {/* <div className="HistoryPage-summary">
-          <h3>Tổng số trang đã in</h3>
-          <p>A4: {totalPages.A4 || 0} trang</p>
-          <p>A3: {totalPages.A3 || 0} trang</p>
-        </div> */}
         <div className="HistoryPage-table-container">
+          {/* Bộ lọc ngày tháng */}
+          <div className="filter-container">
+            <label htmlFor="startDate">Từ ngày:</label>
+            <input
+              type="date"
+              id="startDate"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <label htmlFor="endDate">Đến ngày:</label>
+            <input
+              type="date"
+              id="endDate"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+            <button onClick={fetchHistoryData}>Lọc</button>
+          </div>
+
+          {/* Bảng lịch sử in */}
           <table>
             <thead>
               <tr>
@@ -85,17 +110,23 @@ const HistoryPage = () => {
               </tr>
             </thead>
             <tbody>
-              {historyData.map((record, index) => (
-                <tr key={index}>
-                  <td>{record.printerId}</td>
-                  <td>{record.printTime}</td>
-                  <td>{record.documentName}</td>
-                  <td>{record.paperSize}</td>
-                  <td>{record.pages}</td>
-                  <td>{record.copies}</td>
-                  <td>{record.isDoubleSided}</td>
+              {historyData.length > 0 ? (
+                historyData.map((record, index) => (
+                  <tr key={index}>
+                    <td>{record.printerId}</td>
+                    <td>{record.printTime}</td>
+                    <td>{record.documentName}</td>
+                    <td>{record.paperSize}</td>
+                    <td>{record.pages}</td>
+                    <td>{record.copies}</td>
+                    <td>{record.isDoubleSided}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center" }}>Không có lịch sử in trong khoảng thời gian này</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
