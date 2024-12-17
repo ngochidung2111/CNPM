@@ -49,6 +49,7 @@ const checkPaymentStatus = asyncHandler(async (req, res) => {
                     await student.save();
                 }
             }
+          await transaction.save();
         }
       }
   
