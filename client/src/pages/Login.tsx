@@ -70,6 +70,7 @@ const Login: React.FC = () => {
       localStorage.setItem('accessToken', responseData.accessToken);
       localStorage.setItem('role',role);
       localStorage.setItem('id', responseData.userData._id);
+      localStorage.setItem('name', responseData.userData.name);
       navigator('/');
       console.log('Login successfully', responseData);
 

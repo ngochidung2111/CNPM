@@ -15,6 +15,7 @@ import Config from './pages/Config.tsx';
 import PrintManagement from './pages/PrintManagement.tsx';
 import PrintHistory from './pages/PrintHistorySSPS.tsx';
 import PrintPageManagement from './pages/PageManagementSSPS.tsx';
+import PaymentResult from './pages/PaymentResult.tsx';
 function App() {
   return (
     <div>
@@ -35,6 +36,7 @@ function App() {
           <Route path="/printhistory" element={<PrintHistory />} />
           <Route path="/trangin" element={<PrintPageManagement />} />
           <Route path="*" element={<ErrorPage />} />
+          <Route path="/payment-result/:ordCode" element={<PaymentResult />} />
         </Routes>
       </Router>
     </div>

@@ -4,14 +4,49 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    flex-direction: column;
     margin-top: 90px;
 }
 
 .HistoryPage-table-container {
-    width: 60%;
+    width: 80%;
     margin-top: 20px;
+    margin-left: 140px;
 }
 
+/* Bộ lọc ngày tháng */
+.filter-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.filter-container label {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.filter-container input {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.filter-container button {
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.filter-container button:hover {
+    background-color: #45a049;
+}
+
+/* Bảng lịch sử in */
 table {
     width: 100%;
     border-collapse: collapse;

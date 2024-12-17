@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header/header.tsx';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
-import '../css/PageManagementSSPS.css'; // Import CSS for styling
+import '../css/PageManagementSSPS.css';
 import { useNavigate } from 'react-router-dom';
 type PrintPage = {
   _id: string;
