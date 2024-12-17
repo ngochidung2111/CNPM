@@ -44,18 +44,18 @@ const Login: React.FC = () => {
 
     if (!(newHasError[0] || newHasError[1])) {
       console.log('Form data:', formData);
-      login();
-      // check login valid here
+      if(formData.role==='') {
+        alert('Vui lòng chọn loại đăng nhập(role)')
+        setTimeout(() => navigator('/authorization'), 1000)
+      }
+      else {
+        login();
+      }
     }
     console.log('click');
   };
   const login = async () => {
     console.log("login before executing", formData);
-    // issue: email --> id ? , dang set theo database
-    // chua bao ve url
-    ////
-
-
     let responseData;
     await fetch('http://localhost:5000/api/auth/login', {
       method: 'POST',
@@ -66,15 +66,7 @@ const Login: React.FC = () => {
       body: JSON.stringify(formData),
     }).then((response) => response.json()).then((data) => responseData = data)
     if(responseData.success) {
-      // đang check only token nên từ từ tính 
-      // // thêm thời điểm hết hạn là 3 ngày, nào dùng check phát quá hạn thì cút
-      // const now = new Date();
-      // const expiry = now.getTime() + 3 * 24 * 60 * 60 * 1000;
-      // const token = {
-      //   accessToken: responseData.accessToken,
-      //   expiry: expiry
-      // }
-      // // lưu vào local storage để dùng cho các trang cần phải đăng nhập
+      // lưu vào local storage để dùng cho các trang cần phải đăng nhập
       localStorage.setItem('accessToken', responseData.accessToken);
       localStorage.setItem('role',role);
       localStorage.setItem('id', responseData.userData._id);
@@ -83,7 +75,7 @@ const Login: React.FC = () => {
 
     }
     else {
-      alert(responseData.errors);
+      alert(`responseData.errors:  ${responseData.errors}`);
     }
   }
 

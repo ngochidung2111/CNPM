@@ -5,7 +5,7 @@ const ErrorPage: React.FC = () => {
     const navigate = useNavigate();
 
     const goHome = () => {
-        navigate('/HomePage');
+        navigate('/');
     };
 
     return (
