@@ -31,7 +31,10 @@ const PurchasePage: React.FC = () => {
     }
 
     try {
+      await createTransaction( totalPrice, pageAmount);
+
       const accessToken = localStorage.getItem("accessToken");
+      
 
       const response = await axios.post(
         "http://localhost:5000/api/payOS/createPayment",
@@ -48,7 +51,7 @@ const PurchasePage: React.FC = () => {
 
       const paymentUrl = response.data.url;
       if (paymentUrl) {
-        monitorPaymentStatus(payOSCode, totalPrice, pageAmount);
+        monitorPaymentStatus(payOSCode);
         window.open(paymentUrl, "_blank");
         resetForm();
       } else {
@@ -60,7 +63,7 @@ const PurchasePage: React.FC = () => {
     }
   };
 
-  const monitorPaymentStatus = async (payOSCode: number, totalPrice: number, pageAmount: number) => {
+  const monitorPaymentStatus = async (payOSCode: number) => {
     setPaymentChecking(true);
     const accessToken = localStorage.getItem("accessToken");
 
@@ -89,7 +92,6 @@ const PurchasePage: React.FC = () => {
           clearInterval(interval);
           setPaymentChecking(false);
           setMessage("Thanh toán thành công! Bạn đã mua thêm trang in.");
-          await createTransaction( totalPrice, pageAmount);
         } else if (paymentData.status === "CANCELLED") {
           clearInterval(interval);
           setPaymentChecking(false);
