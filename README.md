@@ -49,7 +49,38 @@ Hệ thống sẽ cần đạt được các yêu cầu sau:
 
 # Mô hình hoá hệ thống
 
+## Usecase Diagram
+
+<p align="center"><img src="/docs/usecaseCNPM2.jpg"></p>
+
+## Các Usecase chính
+### In tài liệu
+<p align="center"><img src="/docs/avtIntailieu.png" width=485px> <img src="/docs/sqIntailieu.png" width=515px></p>
+
+### Mua trang in
+<p align="center"><img src="/docs/avtmuathemtrangin.png" width=345px> <img src="/docs/sqmuatrangin.png" width=655px></p>
+
+### Quản lý cấu hình
+<p align="center"><img src="/docs/avtquanlicauhinh.png" width=545px> <img src="/docs/sqquanlicauhinh.png" width=455px></p>
+
+### Quản lý máy in
+<p align="center"><img src="/docs/avtquanlimayin.png" width=550px> <img src="/docs/sqquanlimayin.png" width=450px></p>
+
+## Class Diagram
+
+<p align="center"><img src="/docs/ClassDiagramCNPM2.jpg"></p>
+
 # Kiến trúc hệ thống
+
+Nhóm sử dụng kiến trúc MVC
+
+- Model: Xử lý và quản lý dữ liệu, tập trung vào logic liên quan đến dữ liệu và quy trình nghiệp vụ, giúp hệ thống hoạt động mạch lạc và nhất quán.
+
+- View: Phần giao diện tương tác với người dùng, chịu trách nhiệm trình bày dữ liệu từ Model và tiếp nhận các thao tác từ người dùng.
+
+- Controller: Đảm nhiệm việc điều phối giữa Model và View, quản lý logic cốt lõi và xử lý yêu cầu của ngườidùng, giúp giữ cho hệ thống hoạt động trơn tru và nhất quán.
+
+<p align="center"><img src="/docs/architec.png"></p>
 
 # Cách khởi chạy hệ thống
 
