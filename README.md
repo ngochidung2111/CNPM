@@ -55,16 +55,16 @@ Hệ thống sẽ cần đạt được các yêu cầu sau:
 
 ## Các Usecase chính
 ### In tài liệu
-<p align="center"><img src="/docs/avtIntailieu.png" width=485px> <img src="/docs/sqIntailieu.png" width=515px></p>
+<p align="center" width=100%><img src="/docs/avtIntailieu.png" width=48%> <img src="/docs/sqIntailieu.png" width=51%></p>
 
 ### Mua trang in
-<p align="center"><img src="/docs/avtmuathemtrangin.png" width=345px> <img src="/docs/sqmuatrangin.png" width=655px></p>
+<p align="center" width=100%><img src="/docs/avtmuathemtrangin.png" width=34%> <img src="/docs/sqmuatrangin.png" width=65%></p>
 
 ### Quản lý cấu hình
-<p align="center"><img src="/docs/avtquanlicauhinh.png" width=545px> <img src="/docs/sqquanlicauhinh.png" width=455px></p>
+<p align="center" width=100%><img src="/docs/avtquanlicauhinh.png" width=54%> <img src="/docs/sqquanlicauhinh.png" width=45%></p>
 
 ### Quản lý máy in
-<p align="center"><img src="/docs/avtquanlimayin.png" width=550px> <img src="/docs/sqquanlimayin.png" width=450px></p>
+<p align="center" width=100%><img src="/docs/avtquanlimayin.png" width=54.5%> <img src="/docs/sqquanlimayin.png" width=44.5%></p>
 
 ## Class Diagram
 
