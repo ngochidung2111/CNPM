@@ -53,25 +53,32 @@ const PrintManagement: React.FC = () => {
     { title: "Quản lý máy in", link: "/printmanagement" },
     { title: "Quản lý cấu hình", link: "/config" },
     { title: "Lịch sử in ấn", link: "/printhistory" },
-    { title: "Báo cáo trang in", link: "/trangin" },
+    { title: "Lịch sử giao dịch", link: "/trangin" },
   ];
 
-  useEffect(() => {
-    const fetchPrinters = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/printers', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-          }
-        });
-        const data = await response.json();
-        setPrinters(data);
-      } catch (error) {
-        console.error('Error fetching printers:', error);
-        navigate('/error');
-      }
-    };
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
 
+  const fetchPrinters = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/printers', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      });
+      const data = await response.json();
+      setPrinters(data);
+    } catch (error) {
+      console.error('Error fetching printers:', error);
+      navigate('/error');
+    }
+  };
+
+  useEffect(() => {
+    verifyLogin();
     fetchPrinters();
   }, []);
 
@@ -80,20 +87,36 @@ const PrintManagement: React.FC = () => {
     setIsConfirmationVisible(true); // Hiển thị modal xác nhận
   };
 
-  const confirmStatusChange = () => {
+  const confirmStatusChange = async () => {
     if (selectedPrinterIndex !== null) {
       const updatedPrinters = [...printers];
       const currentStatus = updatedPrinters[selectedPrinterIndex].isEnabled;
 
       // Chuyển trạng thái từ "Có thể sử dụng" sang "Bảo trì" và ngược lại
       updatedPrinters[selectedPrinterIndex].isEnabled = !currentStatus;
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`http://localhost:5000/api/printers/${updatedPrinters[selectedPrinterIndex].printerId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              isEnabled: updatedPrinters[selectedPrinterIndex].isEnabled,
+            }),
+          });
+      } catch (error) {
+        console.error('Error updating printer status:', error);
+      }
 
       // Cập nhật lại state
       setPrinters(updatedPrinters);
     }
-
     // Ẩn modal sau khi thay đổi
     setIsConfirmationVisible(false);
+
+    
   };
 
   const cancelStatusChange = () => {
@@ -129,23 +152,27 @@ const PrintManagement: React.FC = () => {
       brand: newPrinter.brand,
       model: newPrinter.model,
       description: newPrinter.description,
+      isEnabled: newPrinter.isEnabled,
       location: newPrinter.location,
     };
-  
-    console.log('Request Body:', requestBody);
+
+    console.log('Request body:', requestBody);
   
     try {
       const response = await fetch('http://localhost:5000/api/printers/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
         },
         body: JSON.stringify(requestBody),
       });
+
+      console.log('Response:', response);
   
       if (response.ok) {
-        const addedPrinter = await response.json();
-        setPrinters([...printers, addedPrinter]);
+        // const addedPrinter = await response.json();
+        setPrinters([...printers, requestBody]);
         setNewPrinter({
           _id: '',
           printerId: '',
@@ -171,6 +198,30 @@ const PrintManagement: React.FC = () => {
     }
   };
 
+  const handleDeletePrinter = async (index) => {
+    const printerId = printers[index].printerId;
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await fetch(`http://localhost:5000/api/printers/${printerId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+
+      console.log('Response:', response);
+
+      if (response.ok) {
+        const updatedPrinters = printers.filter((printer) => printer.printerId !== printerId);
+        setPrinters(updatedPrinters);
+      } else {
+        console.error('Failed to delete printer');
+      }
+    } catch (error) {
+      console.error('Error deleting printer:', error);
+    }
+  }
+
   // Hàm thay đổi giá trị trường input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: string) => {
     if (field.startsWith('location.')) {
@@ -186,6 +237,10 @@ const PrintManagement: React.FC = () => {
       setNewPrinter({ ...newPrinter, [field]: e.target.value });
     }
   };
+
+  const handleIsEnabledChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setNewPrinter({ ...newPrinter, isEnabled: e.target.value === 'Có thể sử dụng' });
+  }
 
   // Hàm thay đổi giá trị trường input cho sửa máy in
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: string) => {
@@ -209,16 +264,20 @@ const PrintManagement: React.FC = () => {
   const handleEditPrinter = async () => {
     if (selectedPrinterForEdit) {
       try {
-        const response = await fetch(`http://localhost:5000/api/printers/${selectedPrinterForEdit._id}`, {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await fetch(`http://localhost:5000/api/printers/${selectedPrinterForEdit.printerId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             brand: selectedPrinterForEdit.brand,
             location: selectedPrinterForEdit.location,
           }),
         });
+
+        console.log('Response:', response);
 
         if (response.ok) {
           const updatedPrinters = printers.map((printer) =>
@@ -280,6 +339,7 @@ const PrintManagement: React.FC = () => {
                   <button onClick={() => openEditPrinterModal(index)}>
                     Sửa
                   </button>
+                  <button onClick={()=> handleDeletePrinter(index)}>Xóa</button>
                 </td>
               </tr>
             ))}
@@ -351,17 +411,19 @@ const PrintManagement: React.FC = () => {
               value={newPrinter.description}
               onChange={(e) => handleInputChange(e, 'description')}
             />
-            <label>Nơi đặt:</label>
+            <label>Cơ sở:</label>
             <input
               type="text"
               value={newPrinter.location.campus}
               onChange={(e) => handleInputChange(e, 'location.campus')}
             />
+            <label>Tòa nhà:</label>
             <input
               type="text"
               value={newPrinter.location.building}
               onChange={(e) => handleInputChange(e, 'location.building')}
             />
+            <label>Phòng:</label>
             <input
               type="text"
               value={newPrinter.location.room}
@@ -370,10 +432,10 @@ const PrintManagement: React.FC = () => {
             <label>Trạng thái:</label>
             <select
               value={newPrinter.isEnabled ? "Có thể sử dụng" : "Bảo trì"}
-              onChange={(e) => handleInputChange(e, 'isEnabled')}
+              onChange={(e) => handleIsEnabledChange(e)}
             >
-              <option value="true">Có thể sử dụng</option>
-              <option value="false">Bảo trì</option>
+              <option value={"Có thể sử dụng"}>Có thể sử dụng</option>
+              <option value={"Bảo trì"}>Bảo trì</option>
             </select>
             <div className="modal-actions">
               <button onClick={handleAddPrinter}>Thêm máy in</button>
@@ -394,19 +456,24 @@ const PrintManagement: React.FC = () => {
               value={selectedPrinterForEdit.brand}
               onChange={(e) => handleEditInputChange(e, 'brand')}
             />
-            <label>Nơi đặt:</label>
+            <label>Cơ sở</label>
             <input
               type="text"
+              placeholder='Cơ sở'
               value={selectedPrinterForEdit.location.campus}
               onChange={(e) => handleEditInputChange(e, 'location.campus')}
             />
+            <label>Tòa nhà:</label>
             <input
               type="text"
+              placeholder='Tòa nhà'
               value={selectedPrinterForEdit.location.building}
               onChange={(e) => handleEditInputChange(e, 'location.building')}
             />
+            <label>Phòng:</label>
             <input
               type="text"
+              placeholder='Phòng'
               value={selectedPrinterForEdit.location.room}
               onChange={(e) => handleEditInputChange(e, 'location.room')}
             />

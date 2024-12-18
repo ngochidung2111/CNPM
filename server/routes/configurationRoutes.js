@@ -7,7 +7,7 @@ const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken');
 router.post('/',[verifyAccessToken, isAdmin], configurationtController.createConfiguration);
 
 // Route: Lấy thông tin cấu hình
-router.get('/',[verifyAccessToken, isAdmin], configurationtController.getConfiguration);
+router.get('/',verifyAccessToken, configurationtController.getConfiguration);
 
 // Route: Cập nhật cấu hình hiện tại
 router.put('/',[verifyAccessToken, isAdmin], configurationtController.updateConfiguration);

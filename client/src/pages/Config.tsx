@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header/header.tsx';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
 import '../css/Config.css';
 
@@ -34,34 +35,66 @@ const Config: React.FC<ConfigProps> = ({
     updatedAt,
     __v
   });
+  const [newDate, setNewDate] = useState('');
+  const navigate = useNavigate();
+
+  const fetchConfig = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/configuration',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+          }
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setInfo(data);
+      }
+    } catch (error) {
+      console.error('Fetch config error:', error);
+    }
+  }
+
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
+
 
   useEffect(() => {
     // Kiểm tra sự thay đổi của props trước khi cập nhật trạng thái
-    setInfo(prevInfo => {
-      if (
-        prevInfo._id !== _id ||
-        prevInfo.defaultPages !== defaultPages ||
-        prevInfo.permittedFileTypes.join(',') !== permittedFileTypes.join(',') ||
-        prevInfo.pageGrantDates.join(',') !== pageGrantDates.join(',') ||
-        prevInfo.pricePerPage !== pricePerPage ||
-        prevInfo.createdAt !== createdAt ||
-        prevInfo.updatedAt !== updatedAt ||
-        prevInfo.__v !== __v
-      ) {
-        return {
-          _id,
-          defaultPages,
-          permittedFileTypes,
-          pageGrantDates,
-          pricePerPage,
-          createdAt,
-          updatedAt,
-          __v
-        };
-      }
-      return prevInfo; // Trả lại trạng thái hiện tại nếu không có sự thay đổi
-    });
-  }, [_id, defaultPages, permittedFileTypes, pageGrantDates, pricePerPage, createdAt, updatedAt, __v]);
+    // setInfo(prevInfo => {
+    //   if (
+    //     prevInfo._id !== _id ||
+    //     prevInfo.defaultPages !== defaultPages ||
+    //     prevInfo.permittedFileTypes.join(',') !== permittedFileTypes.join(',') ||
+    //     prevInfo.pageGrantDates.join(',') !== pageGrantDates.join(',') ||
+    //     prevInfo.pricePerPage !== pricePerPage ||
+    //     prevInfo.createdAt !== createdAt ||
+    //     prevInfo.updatedAt !== updatedAt ||
+    //     prevInfo.__v !== __v
+    //   ) {
+    //     return {
+    //       _id,
+    //       defaultPages,
+    //       permittedFileTypes,
+    //       pageGrantDates,
+    //       pricePerPage,
+    //       createdAt,
+    //       updatedAt,
+    //       __v
+    //     };
+    //   }
+    //   return prevInfo; // Trả lại trạng thái hiện tại nếu không có sự thay đổi
+    // });
+
+    verifyLogin();
+    fetchConfig();
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState({ ...info });
@@ -70,7 +103,7 @@ const Config: React.FC<ConfigProps> = ({
     { title: "Quản lý máy in", link: "/printmanagement" },
     { title: "Quản lý cấu hình", link: "/config" },
     { title: "Lịch sử in ấn", link: "/printhistory" },
-    { title: "Báo cáo trang in", link: "/trangin" },
+    { title: "Lịch sử giao dịch", link: "/trangin" },
   ];
 
   const openModal = () => {
@@ -83,6 +116,18 @@ const Config: React.FC<ConfigProps> = ({
   };
 
   const changeInfo = () => {
+
+    // Gửi request cập nhật thông tin hệ thống
+    fetch('http://localhost:5000/api/configuration', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      },
+      body: JSON.stringify(modalInfo),
+    });
+
+
     setInfo(modalInfo);
     setIsModalOpen(false);
   };
@@ -94,6 +139,7 @@ const Config: React.FC<ConfigProps> = ({
         pageGrantDates: [...modalInfo.pageGrantDates, date],
       });
     }
+    setNewDate('');
   };
 
   const handleRemoveGrantDate = (date: string) => {
@@ -113,19 +159,19 @@ const Config: React.FC<ConfigProps> = ({
           <tbody>
             <tr>
               <td className="config-info-label">Số lượng trang được cấp</td>
-              <td className="config-info-value">{info.defaultPages || 100} (A4)</td>
+              <td className="config-info-value">{info.defaultPages || 0} (A4)</td>
             </tr>
             <tr>
               <td className="config-info-label">Loại tệp được chấp nhận</td>
-              <td className="config-info-value">{info.permittedFileTypes.join(', ') || 'pdf, doc, docx'}</td>
+              <td className="config-info-value">{info.permittedFileTypes.join(', ') || ''}</td>
             </tr>
             <tr>
               <td className="config-info-label">Ngày cấp trang</td>
-              <td className="config-info-value">{info.pageGrantDates.join(', ') || '2024-01-01, 2024-02-01'}</td>
+              <td className="config-info-value">{info.pageGrantDates.map((date)=>{return date.substring(0, 10)}).join(', ') || ''}</td>
             </tr>
             <tr>
               <td className="config-info-label">Giá mỗi trang</td>
-              <td className="config-info-value">{info.pricePerPage || 500} VND</td>
+              <td className="config-info-value">{info.pricePerPage || 0} VND</td>
             </tr>
           </tbody>
         </table>
@@ -170,7 +216,7 @@ const Config: React.FC<ConfigProps> = ({
     <span>Ngày cấp trang:</span>
     <input
       type="text"
-      value={modalInfo.pageGrantDates.join(', ')}
+      value={modalInfo.pageGrantDates.map((date)=>{return date.substring(0, 10)}).join(', ')}
       onChange={(e) =>
         setModalInfo({
           ...modalInfo,
@@ -182,19 +228,14 @@ const Config: React.FC<ConfigProps> = ({
   <label>
     <span>Thêm ngày cấp trang:</span>
     <input
-      type="text"
-      value=""
-      onChange={(e) => {
-        const newDate = e.target.value.trim();
-        if (newDate) {
-          setModalInfo({
-            ...modalInfo,
-            pageGrantDates: [...modalInfo.pageGrantDates, newDate],
-          });
-        }
-      }}
+      type="Date"
+      value={newDate}
+      onChange={(e) => {setNewDate(e.target.value)}}
     />
   </label>
+  <button className='dateAdding' type="button" onClick={() => handleAddGrantDate(newDate)}>
+      Thêm
+  </button>
   <label>
     <span>Giá mỗi trang:</span>
     <input
@@ -220,7 +261,7 @@ const Config: React.FC<ConfigProps> = ({
             <div>
               <h4>Ngày cấp trang đã thêm</h4>
               <ul>
-                {modalInfo.pageGrantDates.map((date) => (
+                {modalInfo.pageGrantDates.map((date)=>{return date.substring(0, 10)}).map((date) => (
                   <li key={date}>
                     {date} <button onClick={() => handleRemoveGrantDate(date)}>Xóa</button>
                   </li>

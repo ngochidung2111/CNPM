@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/header/header.tsx";
 import Sidebar from "../components/sidebars/Sidebar.tsx";
@@ -18,50 +19,58 @@ interface Transaction {
 const PurchaseHistory = () => {
   const [historyData, setHistoryData] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const fetchTransactionData = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const studentId = localStorage.getItem("id");
+
+      if (!studentId || !accessToken) {
+        console.warn("Missing student ID or access token.");
+        setHistoryData([]);
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.get(
+        `http://localhost:5000/api/transaction/student/${studentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const formattedData: Transaction[] = response.data.map(
+        (transaction: any) => ({
+          id: transaction._id,
+          time: new Date(transaction.createdAt).toLocaleString("vi-VN"),
+          number: transaction.pageAmount,
+          total: transaction.amount,
+          paymentMethod: transaction.paymentMethod,
+          status: transaction.status,
+          payOSId: transaction.payOSId,
+        })
+      );
+
+      setHistoryData(formattedData);
+    } catch (error) {
+      console.error("Error fetching transaction data:", error);
+      setHistoryData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
 
   useEffect(() => {
-    const fetchTransactionData = async () => {
-      try {
-        const accessToken = localStorage.getItem("accessToken");
-        const studentId = localStorage.getItem("id");
-
-        if (!studentId || !accessToken) {
-          console.warn("Missing student ID or access token.");
-          setHistoryData([]);
-          setLoading(false);
-          return;
-        }
-
-        const response = await axios.get(
-          `http://localhost:5000/api/transaction/student/${studentId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        const formattedData: Transaction[] = response.data.map(
-          (transaction: any) => ({
-            id: transaction._id,
-            time: new Date(transaction.createdAt).toLocaleString("vi-VN"),
-            number: transaction.pageAmount,
-            total: transaction.amount,
-            paymentMethod: transaction.paymentMethod,
-            status: transaction.status,
-            payOSId: transaction.payOSId,
-          })
-        );
-
-        setHistoryData(formattedData);
-      } catch (error) {
-        console.error("Error fetching transaction data:", error);
-        setHistoryData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    verifyLogin();
     fetchTransactionData();
   }, []);
 

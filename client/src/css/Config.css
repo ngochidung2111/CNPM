@@ -111,6 +111,16 @@
   color: white;
 }
 
+.dateAdding {
+  padding: 10px 20px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
 .config-modal-actions button:first-child:hover {
   background-color: #45a049;
 }

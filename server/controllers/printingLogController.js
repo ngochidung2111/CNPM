@@ -58,7 +58,7 @@ exports.createPrintingLog = async (req, res) => {
       startTime: Date.now(), // Ghi lại thời gian bắt đầu
       paperUsage: paperUsage || { A4: 0, A3: 0 }, // Nếu không có, mặc định là không có giấy
       properties,
-      status: 'Pending'  // Mặc định trạng thái là "Pending"
+      status: 'Finished'  // Mặc định trạng thái là "Pending"
     });
 
     // Lưu công việc in vào cơ sở dữ liệu

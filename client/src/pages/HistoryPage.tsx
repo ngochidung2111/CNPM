@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from "../components/header/header.tsx";
 import Sidebar from "../components/sidebars/Sidebar.tsx";
@@ -21,6 +22,7 @@ interface TotalPages {
 }
 
 const HistoryPage = () => {
+  const navigate = useNavigate();
   const [historyData, setHistoryData] = useState<PrintJob[]>([]);
   const [totalPages, setTotalPages] = useState<TotalPages>({ A4: 0, A3: 0 });
   const [startDate, setStartDate] = useState<string>("2024-01-01");
@@ -67,7 +69,14 @@ const HistoryPage = () => {
   }
 };
 
+const verifyLogin = () => {
+  if (!localStorage.getItem('accessToken')) {
+    navigate('/');
+  }
+}
+
   useEffect(() => {
+    verifyLogin();
     fetchHistoryData();
   }, [startDate, endDate]); // Gọi lại khi `startDate` hoặc `endDate` thay đổi
 

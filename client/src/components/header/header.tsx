@@ -38,6 +38,10 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               avatar = fetchedData.avatar || 'https://cellphones.com.vn/sforum/wp-content/uploads/2022/09/4-5.jpg'
               fullName = fetchedData.name || 'Guest';         
             }
+            else {
+              avatar = 'https://img.freepik.com/premium-vector/avatar-guest-vector-icon-illustration_1304166-97.jpg'
+              fullName = 'SPSO';
+            }
           }
           else {
             console.error('Access token not found'); 
@@ -53,7 +57,9 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
     <header className="header">
       <div className="header-left">
+        <a href="/">
         <img src={require('./hcmut.png')} className="logo" alt="Logo" />
+        </a>
         <span className="title">{title}</span>
       </div>
       <div className="header-right" style={{cursor: 'pointer'}}>

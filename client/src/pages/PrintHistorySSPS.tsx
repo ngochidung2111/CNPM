@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header/header.tsx';
 import Sidebar from '../components/sidebars/Sidebar.tsx';
+import {useNavigate} from 'react-router-dom';
 import '../css/PrintHistorySSPS.css'; // Import CSS for styling
 
 type PrintHistory = {
@@ -29,32 +30,41 @@ type PrintHistory = {
 const PrintHistorySSPS: React.FC = () => {
   const [printHistory, setPrintHistory] = useState<PrintHistory[]>([]);
   const [currentPage, setCurrentPage] = useState(1); // Current page
-  const historyPerPage = 2; // Number of records per page
+  const historyPerPage = 10; // Number of records per page
 
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [selectedHistoryIndex, setSelectedHistoryIndex] = useState<number | null>(null);
+
+  const navigate = useNavigate();
 
   const menuItems = [
     { title: "Quản lý máy in", link: "/printmanagement" },
     { title: "Quản lý cấu hình", link: "/config" },
     { title: "Lịch sử in ấn", link: "/printhistory" },
-    { title: "Báo cáo trang in", link: "/trangin" },
+    { title: "Lịch sử giao dịch", link: "/trangin" },
   ];
 
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
+  const fetchPrintHistory = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/api/printingLogs', {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            }
+          });
+          const data = await response.json();
+          setPrintHistory(data);
+        } catch (error) {
+          console.error('Error fetching print history:', error);
+        }
+      };
+
   useEffect(() => {
-    const fetchPrintHistory = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/printingLogs', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          }
-        });
-        const data = await response.json();
-        setPrintHistory(data);
-      } catch (error) {
-        console.error('Error fetching print history:', error);
-      }
-    };
+    verifyLogin();
 
     fetchPrintHistory();
   }, []);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../css/PaymentResult.css';
@@ -8,27 +9,36 @@ const PaymentResult: React.FC = () => {
   const [paymentData, setPaymentData] = useState<any>(null);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  const fetchPaymentStatus = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(
+        `http://localhost:5000/api/payOS/checkPaymentStatus/${ordCode}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setPaymentData(response.data.paymentData);
+    } catch (err) {
+      setError('Không thể lấy thông tin thanh toán.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
 
   useEffect(() => {
-    const fetchPaymentStatus = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken');
-        const response = await axios.get(
-          `http://localhost:5000/api/payOS/checkPaymentStatus/${ordCode}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        setPaymentData(response.data.paymentData);
-      } catch (err) {
-        setError('Không thể lấy thông tin thanh toán.');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    verifyLogin();
 
     fetchPaymentStatus();
   }, [ordCode]);

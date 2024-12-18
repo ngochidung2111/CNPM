@@ -30,30 +30,38 @@ const PrintPageManagement: React.FC = () => {
     { title: "Quản lý máy in", link: "/printmanagement" },
     { title: "Quản lý cấu hình", link: "/config" },
     { title: "Lịch sử in ấn", link: "/printhistory" },
-    { title: "Báo cáo trang in", link: "/trangin" },
+    { title: "Lịch sử giao dịch", link: "/trangin" },
   ];
 
-  useEffect(() => {
-    const fetchPrintPages = async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      try {
-        const response = await fetch('http://localhost:5000/api/transaction', {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+  const fetchPrintPages = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    try {
+      const response = await fetch('http://localhost:5000/api/transaction', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
-        const data = await response.json();
-        setPrintPages(data);
-      } catch (error) {
-        console.error('Error fetching print pages:', error);
-        navigate('/error');
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
+      const data = await response.json();
+      setPrintPages(data);
+    } catch (error) {
+      console.error('Error fetching print pages:', error);
+      navigate('/error');
+    }
+  };
 
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
+
+  useEffect(() => {
+
+    verifyLogin();
     fetchPrintPages();
   }, []);
 

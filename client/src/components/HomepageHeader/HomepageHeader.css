@@ -54,7 +54,7 @@ text-decoration-skip-ink: none;
     line-height: 50px;
     padding-right: 12px;
 }
-.homepage-header button {
+.homepage-header-button {
     text-decoration: underline;
     text-underline-offset: 2px;
     font-family: Inter;
@@ -62,7 +62,7 @@ text-decoration-skip-ink: none;
     font-weight: 400;
     line-height: 28px;
     text-align: center;
-    margin-top: 72px;
+    /* margin-top: 72px; */
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #fff;
@@ -71,10 +71,10 @@ text-decoration-skip-ink: none;
     border: none;
     cursor: pointer;
 }
-.homepage-header button:hover {
+.homepage-header-button:hover {
     color: #000;
 }
-.homepage-header button:active {
+.homepage-header-button:active {
     color: #adefd1d1;
 }
 .homepage-header::after {

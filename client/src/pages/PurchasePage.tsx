@@ -4,6 +4,7 @@ import Header from "../components/header/header.tsx";
 import Sidebar from "../components/sidebars/Sidebar.tsx";
 import "../css/PrintPage.css";
 import { menuItems } from "../data/menuItems.tsx";
+import { useNavigate } from "react-router-dom";
 
 const PurchasePage: React.FC = () => {
   const [pageAmount, setPageAmount] = useState<number | null>(null);
@@ -11,8 +12,36 @@ const PurchasePage: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [paymentChecking, setPaymentChecking] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [pricePerPage, setPricePerPage] = useState<number>(300); // Giá mỗi trang in
+  const navigate = useNavigate(); 
 
-  const pricePerPage = 300;
+  const getConfig = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      const response = await fetch(`http://localhost:5000/api/configuration`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      const data = await response.json();
+      const config = data;
+      setPricePerPage(config.pricePerPage);
+    } catch (error) {
+      console.error("Error fetching config:", error);
+    }
+  }
+
+  const verifyLogin = () => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/');
+    }
+  }
+
+  useEffect(() => {
+    verifyLogin();
+    getConfig();
+  }, []);
 
   const getStudentData = () => {
     return {
