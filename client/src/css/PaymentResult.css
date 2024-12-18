@@ -16,6 +16,21 @@ h1 {
     margin-bottom: 20px;
 }
 
+.payment-result-return-button{
+    margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.payment-result-return-button:hover {
+  background-color: #45a049;
+}
+
 .payment-card {
     padding: 20px;
     border-radius: 10px;

@@ -80,8 +80,8 @@ const PurchasePage: React.FC = () => {
 
       const paymentUrl = response.data.url;
       if (paymentUrl) {
-        monitorPaymentStatus(payOSCode);
-        window.open(paymentUrl, "_blank");
+        // monitorPaymentStatus(payOSCode);
+        window.location.href = paymentUrl;
         resetForm();
       } else {
         setError("Không thể tạo giao dịch thanh toán.");

@@ -73,6 +73,7 @@ const PaymentResult: React.FC = () => {
                 <p><strong>Lý do hủy:</strong> {paymentData.cancellationReason}</p>
               )}
             </div>
+            <button onClick={() => navigate('/')} className="payment-result-return-button">Trang chủ</button>
           </div>
         )
       )}
