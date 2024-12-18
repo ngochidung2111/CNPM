@@ -58,10 +58,10 @@ Hệ thống sẽ cần đạt được các yêu cầu sau:
 <p align="center" width=100%><img src="/docs/avtIntailieu.png" width=48%> <img src="/docs/sqIntailieu.png" width=51%></p>
 
 ### Mua trang in
-<p align="center" width=100%><img src="/docs/avtmuathemtrangin.png" width=34%> <img src="/docs/sqmuatrangin.png" width=65%></p>
+<p align="center" width=100%><img src="/docs/avtmuathemtrangin.png" width=34.5%> <img src="/docs/sqmuatrangin.png" width=64.5%></p>
 
 ### Quản lý cấu hình
-<p align="center" width=100%><img src="/docs/avtquanlicauhinh.png" width=54%> <img src="/docs/sqquanlicauhinh.png" width=45%></p>
+<p align="center" width=100%><img src="/docs/avtquanlicauhinh.png" width=53.5%> <img src="/docs/sqquanlicauhinh.png" width=45.5%></p>
 
 ### Quản lý máy in
 <p align="center" width=100%><img src="/docs/avtquanlimayin.png" width=54.5%> <img src="/docs/sqquanlimayin.png" width=44.5%></p>
