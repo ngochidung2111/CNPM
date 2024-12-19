@@ -58,13 +58,24 @@ exports.createPrintingLog = async (req, res) => {
       startTime: Date.now(), // Ghi lại thời gian bắt đầu
       paperUsage: paperUsage || { A4: 0, A3: 0 }, // Nếu không có, mặc định là không có giấy
       properties,
-      status: 'Finished'  // Mặc định trạng thái là "Pending"
+      status: 'Completed'  // Mặc định trạng thái là "Pending"
     });
 
     // Lưu công việc in vào cơ sở dữ liệu
     await newPrintJob.save();
 
-    student.pageBalance -= copies*(paperUsage.A4 + 2*paperUsage.A3);  // Trừ số trang in từ số trang còn lại của sinh viên
+    let pageUsed = 0;
+    if (!isDoubleSided) {
+      pageUsed = copies * (paperUsage.A4 + 2 * paperUsage.A3);
+    } else {
+      pageUsed = Math.ceil((copies * (paperUsage.A4 + 2* paperUsage.A3))/2);
+    }
+
+    if (student.pageBalance < pageUsed) {  // Kiểm tra số trang còn lại của sinh viên có đủ không
+      return res.status(400).json({ error: 'Not enough balance' });
+    }
+
+    student.pageBalance -= pageUsed;  // Trừ số trang in từ số trang còn lại của sinh viên
     await student.save();  // Lưu thông tin sinh viên sau khi trừ số trang in
 
     // Trả về thông báo thành công

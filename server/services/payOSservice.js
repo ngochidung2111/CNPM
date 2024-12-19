@@ -41,11 +41,12 @@ const checkPaymentStatus = asyncHandler(async (req, res) => {
         
         if (transaction) {
           transaction.status = paymentStatusResponse.status;
-            if (transaction.status === "PAID") {
+            if (transaction.status === "PAID" && !transaction.pageAdded) {
                 const student = await Student.findById(transaction.studentId);
 
                 if (student) {
-                    student.pageBalance += transaction.pageAmount/2;
+                  transaction.pageAdded = true;
+                    student.pageBalance += transaction.pageAmount;
                     await student.save();
                 }
             }

@@ -136,9 +136,11 @@ const PrintPage: React.FC = () => {
         }
       );
       alert(response.data.message);
+      window.location.reload();
     } catch (error) {
       console.error("Error creating printing log:", error);
       alert(error.response?.data?.error || "Đã xảy ra lỗi khi in tài liệu");
+      window.location.reload();
     }
   };
 
