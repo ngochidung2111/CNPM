@@ -62,7 +62,7 @@ exports.getConfiguration = async (req, res) => {
 // cập nhật cấu hình hiện tại
 exports.updateConfiguration = async (req, res) => {
   try {
-    const { defaultPages, permittedFileTypes, pageGrantDates } = req.body;
+    const { defaultPages, permittedFileTypes, pageGrantDates, pricePerPage } = req.body;
 
     // Kiểm tra xem `defaultPages` có phải là số dương không
     if (defaultPages && (typeof defaultPages !== 'number' || defaultPages <= 0)) {
@@ -79,10 +79,15 @@ exports.updateConfiguration = async (req, res) => {
       return res.status(400).json({ message: 'pageGrantDates must be an array of valid date strings' });
     }
 
+    // Kiểm tra `pricePerPage` có phải là số dương không
+    if (pricePerPage && (typeof pricePerPage !== 'number' || pricePerPage <= 0)) {
+      return res.status(400).json({ message: 'pricePerPage must be a positive number' });
+    }
+
     // Cập nhật cấu hình
     const updatedConfiguration = await Configuration.findOneAndUpdate(
       {}, // Không cần điều kiện vì chỉ có một cấu hình duy nhất
-      { defaultPages, permittedFileTypes, pageGrantDates },
+      { defaultPages, permittedFileTypes, pageGrantDates, pricePerPage },
       { new: true } // Trả về bản ghi đã được cập nhật
     );
 
