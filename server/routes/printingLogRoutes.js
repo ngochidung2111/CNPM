@@ -1,26 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const printJobController = require('../controllers/printingLogController');
+const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken');
 
 // Tạo công việc in mới
-router.post('/', printJobController.createPrintingLog);
+router.post('/', verifyAccessToken, printJobController.createPrintingLog);
 
 // Lấy tất cả công việc in
-router.get('/', printJobController.getAllPrintingLog);
+router.get('/', [verifyAccessToken, isAdmin], printJobController.getAllPrintingLog);
 
 // Lấy tất cả công việc in có lọc theo ngày
-router.get('/date', printJobController.getAllPrintingLogByDate);
+router.get('/date', [verifyAccessToken, isAdmin], printJobController.getAllPrintingLogByDate);
 
 // Lấy công việc in theo ID
-router.get('/:id', printJobController.getPrintingLogById);
+router.get('/:id', verifyAccessToken, printJobController.getPrintingLogById);
 
 // Lấy công việc in theo ID và lọc theo khoảng thời gian
-router.get('/date/:id/', printJobController.getPrintingLogByStudentIdAndDate);
+router.get('/date/:id/', verifyAccessToken, printJobController.getPrintingLogByStudentIdAndDate);
 
 // Cập nhật công việc in
-router.put('/:id', printJobController.updatePrintingLog);
+router.put('/:id', [verifyAccessToken, isAdmin], printJobController.updatePrintingLog);
 
 // Xóa công việc in
-router.delete('/:id', printJobController.deletePrintingLog);
+router.delete('/:id', [verifyAccessToken, isAdmin], printJobController.deletePrintingLog);
 
 module.exports = router;

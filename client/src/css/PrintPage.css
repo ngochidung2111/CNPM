@@ -1,0 +1,228 @@
+/* General container styling */
+.PrintPage-main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 90px);
+    margin-left: 220px;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.PrintPage-form-container {
+    border: 1px solid #ddd;
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #fdfdfd;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.PrintPage-form-container div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.PrintPage-form-container div label {
+    width: 35%;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+}
+
+.PrintPage-form-container div input,
+.PrintPage-form-container div select {
+    width: 65%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #666;
+    transition: border-color 0.3s;
+}
+
+.PrintPage-form-container div input:focus,
+.PrintPage-form-container div select:focus {
+    border-color: #5cb85c;
+    outline: none;
+}
+
+.PrintPage-form-container .PrintPage-upload-container {
+    justify-content: space-between;
+}
+
+.PrintPage-form-container .PrintPage-upload-container .PrintPage-icon-container {
+    width: 65%;
+    display: flex;
+    justify-content: center;
+}
+
+.PrintPage-upload-container .PrintPage-icon-container .PrintPage-icon-label {
+    cursor: pointer;
+    font-size: 24px;
+    color: #5cb85c;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.PrintPage-upload-container .PrintPage-icon-container:hover .PrintPage-icon-label {
+    transform: scale(1.1);
+    color: #4cae4c;
+}
+
+.PrintPage-form-container .checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.checkbox-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.checkbox-container input {
+    accent-color: #5cb85c;
+}
+
+.printer-select-button {
+    width: 350px;
+    padding: 12px;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.print-button{
+    width: 100%;
+    padding: 12px;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.PrintPage-form-container button:hover {
+    background-color: #4cae4c;
+    transform: scale(1.05);
+}
+
+.PrintPage-form-container button:active {
+    background-color: #3e8e41;
+    transform: scale(1.05);
+}
+
+.printer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.printer-modal-content {
+    background-color: #fff;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+}
+
+.printer-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.printer-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.printer-list li.enabled:hover {
+    background-color: #e6f7e6;
+}
+
+.printer-list li.disabled {
+    background-color: #f2f2f2;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.printer-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.printer-details {
+    text-align: left;
+    width: 70%;
+}
+
+.printer-image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+}
+
+.status-true {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-false {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.close-modal {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.close-modal:hover {
+    background-color: #c9302c;
+}

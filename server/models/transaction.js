@@ -6,7 +6,8 @@ const transactionSchema = new mongoose.Schema({
     amount:     { type: Number, required: true },                       // Số tiền giao dịch
     pageAmount: { type: Number, required: true },                   // Số trang cộng thêm vào tài khoản
     paymentMethod: { type: String, default: 'BKPay' },              // Phương thức thanh toán
-    status:     { type: String, enum: ['PENDING', 'PAID', 'FAILED'], default: 'PENDING' }, // Trạng thái giao dịch
+    status:     { type: String, enum: ['PENDING', 'PAID', 'CANCELLED'], default: 'PENDING' }, // Trạng thái giao dịch
+    pageAdded: { type: Boolean, default: false },                    // Trạng thái trang đã được cộng vào tài khoản chưa
     payOSId:    { type: String, unique: true, required: true },        // Mã giao dịch từ PayOS
 }, { timestamps: true });
 

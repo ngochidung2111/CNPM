@@ -6,6 +6,7 @@ const studentSchema = new mongoose.Schema({
     email:      { type: String, required: true, unique: true },// Email
     password:   { type: String, required: true },              // Password
     pageBalance:{ type: Number, default: 0 },                  // Số trang in còn lại
+    refreshToken: { type: String, default: '' },               // Refresh token
 }, { timestamps: true });   
 
 studentSchema.index({ name: 1 });

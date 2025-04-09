@@ -1,5 +1,6 @@
 const PrintJob = require('../models/PrintingLog');
 const Printer = require('../models/printerInfo');  // Import model Printer
+const Configuration = require('../models/configuration');
 const Student = require('../models/student');
 // Thêm công việc in ấn mới
 exports.createPrintingLog = async (req, res) => {
@@ -16,6 +17,23 @@ exports.createPrintingLog = async (req, res) => {
     const printer = await Printer.findOne({ printerId });
     if (!printer) {
       return res.status(404).json({ error: 'Printer not found' });
+    }
+
+    // Kiểm tra tính hợp lệ của file name
+      // Lấy cấu hình từ DB
+    const filenameValid = fileName && fileName.trim().length > 0;
+    if (!filenameValid) {
+      return res.status(400).json({ error: 'File name is required' });
+    }
+
+    //Kiểm tra file type có nằm trong permittedFileTypes không
+    const config = await Configuration.findOne();
+    if (!config) {
+      return res.status(500).json({ error: 'Configuration not found' });
+    }
+    
+    if (!config.permittedFileTypes.includes(fileName.split('.').pop())){
+      return res.status(400).json({ error: 'File type is not permitted' });
     }
 
     // Kiểm tra tính hợp lệ của paperUsage (nếu có)
@@ -40,11 +58,25 @@ exports.createPrintingLog = async (req, res) => {
       startTime: Date.now(), // Ghi lại thời gian bắt đầu
       paperUsage: paperUsage || { A4: 0, A3: 0 }, // Nếu không có, mặc định là không có giấy
       properties,
-      status: 'Pending'  // Mặc định trạng thái là "Pending"
+      status: 'Completed'  // Mặc định trạng thái là "Pending"
     });
 
     // Lưu công việc in vào cơ sở dữ liệu
     await newPrintJob.save();
+
+    let pageUsed = 0;
+    if (!isDoubleSided) {
+      pageUsed = copies * (paperUsage.A4 + 2 * paperUsage.A3);
+    } else {
+      pageUsed = Math.ceil((copies * (paperUsage.A4 + 2* paperUsage.A3))/2);
+    }
+
+    if (student.pageBalance < pageUsed) {  // Kiểm tra số trang còn lại của sinh viên có đủ không
+      return res.status(400).json({ error: 'Not enough balance' });
+    }
+
+    student.pageBalance -= pageUsed;  // Trừ số trang in từ số trang còn lại của sinh viên
+    await student.save();  // Lưu thông tin sinh viên sau khi trừ số trang in
 
     // Trả về thông báo thành công
     res.status(201).json({
@@ -208,6 +240,22 @@ exports.updatePrintingLog = async (req, res) => {
     const printJob = await PrintJob.findById(id);
     if (!printJob) {
       return res.status(404).json({ error: 'Print job not found' });
+    }
+
+    // Kiểm tra tính hợp lệ của file name
+    // Lấy cấu hình từ DB
+    const filenameValid = fileName && fileName.trim().length > 0;
+    if (!filenameValid) {
+      return res.status(400).json({ error: 'File name is required' });
+    }
+
+    //Kiểm tra file type có nằm trong permittedFileTypes không
+    const config = await Configuration.findOne();
+    if (!config) {
+      return res.status(500).json({ error: 'Configuration not found' });
+    }
+    if (config.permittedFileTypes.includes(fileName.split('.').pop())){
+      return res.status(400).json({ error: 'File type is not permitted' });
     }
 
     // Không cho phép sửa studentId và printerId

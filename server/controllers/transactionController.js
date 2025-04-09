@@ -47,10 +47,10 @@ exports.createTransaction = async (req, res) => {
       }
   
       // Kiểm tra phương thức thanh toán hợp lệ
-      const validPaymentMethods = ['BKPay', 'CreditCard', 'Momo'];
-      if (!validPaymentMethods.includes(paymentMethod)) {
-        return res.status(400).json({ message: `Invalid payment method. Supported methods: ${validPaymentMethods.join(', ')}` });
-      }
+      // const validPaymentMethods = ['BKPay', 'CreditCard', 'Momo'];
+      // if (!validPaymentMethods.includes(paymentMethod)) {
+      //   return res.status(400).json({ message: `Invalid payment method. Supported methods: ${validPaymentMethods.join(', ')}` });
+      // }
   
       // Tạo giao dịch mới
       const newTransaction = new Transaction({

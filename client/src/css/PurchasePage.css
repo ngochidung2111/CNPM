@@ -1,0 +1,112 @@
+.PurchasePage-content {
+    margin-left: 220px;
+    padding: 20px;
+    margin-top: 90px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    min-height: calc(100vh - 110px);
+}
+
+.PurchasePage-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 20px 25px;
+    text-align: left;
+    max-width: 450px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.PurchasePage-box table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+    margin-bottom: 15px;
+}
+
+.PurchasePage-box table td,
+.PurchasePage-box table th {
+    border: none;
+    padding: 12px 0;
+    min-width: 150px;
+    color: #333;
+    font-size: 14px;
+}
+
+.PurchasePage-box table td {
+    text-align: right;
+}
+
+.PurchasePage-box table td:first-child {
+    text-align: left;
+    color: #555;
+    font-weight: bold;
+}
+
+.PurchasePage-input {
+    padding: 12px;
+    margin: 8px 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    background-color: #fefefe;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.PurchasePage-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+.PurchasePage-button-container {
+    text-align: center;
+}
+
+.PurchasePage-pay-button {
+    width: 100%;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.PurchasePage-pay-button:hover {
+    background-color: #4cae4c;
+    transform: scale(1.05);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.PurchasePage-box .error-message {
+    color: #e63946;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.PurchasePage-box .success-message {
+    color: #28a745;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.PurchasePage-total-price {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin-top: 15px;
+}

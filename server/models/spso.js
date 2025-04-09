@@ -6,6 +6,7 @@ const spsoSchema = new mongoose.Schema({
     email:       { type: String, required: true, unique: true },
     password:    { type: String, required: true },
     permissions: { type: [String], default: [] }, // Quyền của nhân viên
+    refreshToken: { type: String, default: '' },               // Refresh token
 }, { timestamps: true });
 
 const SPSO = mongoose.model('SPSO', spsoSchema);
